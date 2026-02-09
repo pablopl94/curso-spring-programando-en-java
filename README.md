@@ -27,7 +27,7 @@ trabajo real:
 
 * **Sync:** Asegúrate de tener tu rama `main` actualizada.
 * **Branch:** Crea una rama para la tarea semanal: `git checkout -b feature/semana-X-nombre-tarea`.
-* **PR:** Sube tus cambios y abre una *Pull Request* hacia `main`.
+* **PR:** Sube tus cambios y abre una *Pull Request* hacia tu rama con tu nombre. Por ejemplo: `pablo`.
 * **Review:** Revisaré tu código y te daré feedback antes de dar el OK (Merge).
 
 ---
