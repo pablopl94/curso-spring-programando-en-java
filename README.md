@@ -1,4 +1,6 @@
-## SEMANA 1 - COMANDOS PARA EJECUTAR LA APLICACIÓN
+# SEMANA 1 - DI. CONFIGURACIÓN DE ENTORNOS Y PERFILES
+
+## COMANDOS E INSTRUCCIONES PARA LEVANTAR LA API
 
 ---
 
@@ -67,5 +69,3 @@ Resultado esperado en consola:
 CodeJa levantado con éxito en el perfil: [prod]
 La pasarela de pago activa es: paypal
 ```
-
-**¡A darle caña al código! 💻🔥**
