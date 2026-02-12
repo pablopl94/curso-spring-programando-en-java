@@ -1,3 +1,5 @@
 spring:
   application:
     name: bootcamp-1-2026
+  profiles:
+    active: prod # Si se ejecuta por comandos, se ignora por jerarquía

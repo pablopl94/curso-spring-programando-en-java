@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: dev # Se define que este .yaml es para el profile dev
+
+server: # NOTA: server va al mismo nivel que spring
+  port: 8081
+
