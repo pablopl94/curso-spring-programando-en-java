@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: prod # Se define que este .yaml es para el profile "prod"
+
+server:
+  port: 443
+
+# Aquí defino las propiedades de la aplicación, app es una convención
+# podría ser feature o cualquier cosa
+app:
+  payment-provider: paypal # Propiedad que indica que servicio se va a usar para los pagos en "prod"
+  stripe-key: ${STRIPE_API_KEY}
+  paypal-key: ${PAYPAL_API_KEY}
