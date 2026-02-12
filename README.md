@@ -116,17 +116,4 @@ Resultado esperado en consola:
 CodeJa levantado con éxito en el perfil: [prod]
 La pasarela de pago activa es: paypal
 ```
-
-## 💬 Soporte y Mentoría
-
-Si te quedas bloqueado:
-
-1. Revisa las clases en la plataforma https://codeja.dev en el apartado del Bootcamp.
-2. Pregunta en el canal de **Discord** de la comunidad (¡donde todos aprendemos!).
-3. Si es un error técnico persistente, abre un **Issue** en este repositorio detallando el error y qué has intentado
-   para solucionarlo.
-4. Contactame por email, WhatsApp o Discord.
-
 ---
-
-**¡A darle caña al código! 💻🔥**
