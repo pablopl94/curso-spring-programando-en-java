@@ -3,10 +3,12 @@ package com.programandoenjava.bootcamp_1_2026;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.Arrays;
 
 @SpringBootApplication
+@EnableAsync()
 public class Bootcamp12026Application {
 
 	public static void main(String[] args) {
