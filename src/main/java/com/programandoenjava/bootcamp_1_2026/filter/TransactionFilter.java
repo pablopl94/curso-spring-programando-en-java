@@ -12,10 +12,17 @@ public class TransactionFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader("X-Transaction-Id");
-        if(header == null){
-            response.sendError(400, "No se ha encontrado X-Transaction-Id en el Header");
+
+        String path = request.getRequestURI();
+
+        if(path.equals("/checkout")){
+            String header = request.getHeader("X-Transaction-Id");
+            if(header != null){
+                System.out.println("TRANSACCIÓN CAPTURADA : " + header);
+                filterChain.doFilter(request,response);
+            }else{
+                response.sendError(400, "No se ha encontrado X-Transaction-Id en el Header");
+            }
         }
-        filterChain.doFilter(request,response);
     }
 }
