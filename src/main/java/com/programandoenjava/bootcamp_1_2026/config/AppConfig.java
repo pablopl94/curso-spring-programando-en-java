@@ -1,13 +1,16 @@
 package com.programandoenjava.bootcamp_1_2026.config;
 
+import com.programandoenjava.bootcamp_1_2026.interceptor.PerformanceInterceptor;
 import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
 import com.programandoenjava.bootcamp_1_2026.service.impl.MockProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class AppConfig {
+public class AppConfig implements WebMvcConfigurer {
 
     // Este method define un bean de tipo PaymentProcessor que Spring puede inyectar
     // @ConditionalOnMissingBean indica que este bean solo se crea si NO hay otro PaymentProcessor registrado
@@ -16,5 +19,12 @@ public class AppConfig {
     @ConditionalOnMissingBean(PaymentProcessor.class)
     public PaymentProcessor getPaymentProcessorDefault() {
         return new MockProcessor();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new PerformanceInterceptor())
+                .addPathPatterns("/api/order/**")
+                .order(1);
     }
 }
