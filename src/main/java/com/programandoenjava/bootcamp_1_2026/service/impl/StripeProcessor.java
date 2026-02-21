@@ -24,7 +24,7 @@ public class StripeProcessor extends AuditablePaymentProcessor {
         log.debug("Conectando a Stripe API mediante clave: {}", stripeKey);
         publisher.publishEvent(new PaymentEvent(request.getAmount(),request.getUserEmail(), PaymentRequest.supplierEmail));
         // NOTA: Al ser asíncrono debería imprimir el siguiente System.out.println porque el hilo principal NO espera al listener
-        System.out.println("Pago procesado por la cantidad de: " + request.getAmount() + "€");
+        log.debug("Pago procesado por la cantidad de: {}€", request.getAmount());
     }
 
 }

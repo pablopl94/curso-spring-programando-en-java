@@ -21,6 +21,6 @@ public class PerformanceInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-        log.info("Tiempo total de respuesta : {} ms", System.currentTimeMillis() - requestStart);
+        log.debug("Tiempo total de respuesta : {} ms", System.currentTimeMillis() - requestStart);
     }
 }
