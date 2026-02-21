@@ -1,13 +1,9 @@
 package com.programandoenjava.bootcamp_1_2026.service;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
+import com.programandoenjava.bootcamp_1_2026.model.PaymentRequest;
 
-@Component
-@ConditionalOnProperty(
-        name = ""
-)
-public interface PaymentProcessor {
+public interface PaymentProcessor{
 
-    void process(double amount);
+    void process(PaymentRequest request);
+
 }

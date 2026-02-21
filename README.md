@@ -69,3 +69,4 @@ Resultado esperado en consola:
 CodeJa levantado con éxito en el perfil: [prod]
 La pasarela de pago activa es: paypal
 ```
+---

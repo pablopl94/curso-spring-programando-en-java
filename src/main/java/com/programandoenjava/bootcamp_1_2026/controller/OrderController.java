@@ -1,11 +1,16 @@
 package com.programandoenjava.bootcamp_1_2026.controller;
 
+
+import com.programandoenjava.bootcamp_1_2026.model.PaymentRequest;
 import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/order/")
 public class OrderController {
 
     private final PaymentProcessor paymentProcessor;
@@ -15,9 +20,8 @@ public class OrderController {
     }
 
     @PostMapping("/checkout")
-    public void checkout (@RequestParam double amount ){
-
-        paymentProcessor.process(amount);
-
+    public ResponseEntity<PaymentRequest> checkout (@RequestBody PaymentRequest request) {
+        paymentProcessor.process(request);
+        return ResponseEntity.noContent().build();
     }
 }
