@@ -4,15 +4,12 @@ import com.programandoenjava.bootcamp_1_2026.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.model.PaymentEvent;
 import com.programandoenjava.bootcamp_1_2026.model.PaymentRequest;
 import com.programandoenjava.bootcamp_1_2026.service.AuditablePaymentProcessor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("dev")
 public class MockProcessor extends AuditablePaymentProcessor {
-
-    private ApplicationEventPublisher publisher;
 
     @Override
     public void process(PaymentRequest request) {
@@ -23,8 +20,4 @@ public class MockProcessor extends AuditablePaymentProcessor {
         log.debug("Pago procesado por la cantidad de : {}€", request.getAmount());
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
 }
