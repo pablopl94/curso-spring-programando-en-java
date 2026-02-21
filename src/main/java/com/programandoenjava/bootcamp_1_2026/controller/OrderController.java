@@ -20,8 +20,8 @@ public class OrderController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<PaymentRequest> checkout (@RequestBody PaymentRequest request) {
+    public ResponseEntity<PaymentRequest> checkout(@RequestBody PaymentRequest request) {
         paymentProcessor.process(request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(request);
     }
 }

@@ -1,13 +1,17 @@
 package com.programandoenjava.bootcamp_1_2026.interceptor;
 
+import com.programandoenjava.bootcamp_1_2026.filter.TransactionFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class PerformanceInterceptor implements HandlerInterceptor {
 
-    Long requestStart = 0L;
+    long requestStart = 0L;
+    private static final Logger log = LoggerFactory.getLogger(TransactionFilter.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -17,6 +21,6 @@ public class PerformanceInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-        System.out.println("Tiempo total de respuesta : " + (System.currentTimeMillis() - requestStart ) + " ms");
+        log.info("Tiempo total de respuesta : {} ms", System.currentTimeMillis() - requestStart);
     }
 }
