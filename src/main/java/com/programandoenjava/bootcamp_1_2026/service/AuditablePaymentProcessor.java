@@ -2,9 +2,12 @@ package com.programandoenjava.bootcamp_1_2026.service;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 
-import java.util.logging.Logger;
 
 /*
  * Clase abstracta para evitar repetir código en todos los process.
@@ -13,16 +16,21 @@ import java.util.logging.Logger;
  * También implementa PaymentProcessor para que Spring sepa que estos beans
  * son procesadores de pago y pueda inyectarlos donde haga falta.
  */
-public abstract class AuditablePaymentProcessor implements PaymentProcessor, BeanNameAware {
+public abstract class AuditablePaymentProcessor implements PaymentProcessor, BeanNameAware, ApplicationEventPublisherAware {
 
     private String beanName;
     protected Logger log;
+    protected ApplicationEventPublisher publisher;
 
     public AuditablePaymentProcessor() {
-        log = Logger.getLogger(this.getClass().getName());
-        System.out.println("PRIMER PASO => INICIALIZANDO EL BEAN: " + this.getClass().getSimpleName());
+        log = LoggerFactory.getLogger(this.getClass().getName());
+        log.info("INICIALIZANDO EL BEAN: {}", this.getClass().getSimpleName());
     }
 
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
+    }
     @Override
     public void setBeanName(String name) {
         this.beanName = name;
@@ -30,15 +38,12 @@ public abstract class AuditablePaymentProcessor implements PaymentProcessor, Bea
 
     @PostConstruct
     private void init(){
-        System.out.println("SEGUNDO PASO => INICIANDO EL BEAN: " + beanName);
-        log.info("[LOG] Configurando procesador " + beanName + "...");
+        log.info("[LOG] Configurando procesador {}...", beanName);
     }
 
     @PreDestroy
     private void destroy(){
-        System.out.println("TERCER PASO => DESTRUYENDO EL BEAN: " + beanName);
-        log.info("[LOG] Cerrando conexiones de " + beanName + " antes del apagado...");
-
+        log.info("[LOG] Cerrando conexiones de {} antes del apagado...", beanName);
     }
 
 }

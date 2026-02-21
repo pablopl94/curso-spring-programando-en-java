@@ -1,6 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.exception;
 
-public class PaymentException extends RuntimeException{
+public class PaymentException extends RuntimeException {
 
     private String code;
 

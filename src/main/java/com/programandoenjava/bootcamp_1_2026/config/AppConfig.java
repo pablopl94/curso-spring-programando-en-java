@@ -5,10 +5,9 @@ import com.programandoenjava.bootcamp_1_2026.service.impl.MockProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+public class AppConfig {
 
     // Este method define un bean de tipo PaymentProcessor que Spring puede inyectar
     // @ConditionalOnMissingBean indica que este bean solo se crea si NO hay otro PaymentProcessor registrado
