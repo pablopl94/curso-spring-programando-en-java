@@ -1,12 +1,10 @@
 package com.programandoenjava.bootcamp_1_2026.config;
 
-import com.programandoenjava.bootcamp_1_2026.interceptor.PerformanceInterceptor;
 import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
 import com.programandoenjava.bootcamp_1_2026.service.impl.MockProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -21,10 +19,4 @@ public class AppConfig implements WebMvcConfigurer {
         return new MockProcessor();
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new PerformanceInterceptor())
-                .addPathPatterns("/api/order/**")
-                .order(1);
-    }
 }

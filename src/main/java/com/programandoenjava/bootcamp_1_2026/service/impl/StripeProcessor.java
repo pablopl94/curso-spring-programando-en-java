@@ -1,5 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.service.impl;
 
+import com.programandoenjava.bootcamp_1_2026.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.model.PaymentEvent;
 import com.programandoenjava.bootcamp_1_2026.model.PaymentRequest;
 import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
@@ -21,6 +22,8 @@ public class StripeProcessor implements PaymentProcessor, ApplicationEventPublis
 
     @Override
     public void process(PaymentRequest request) {
+        if(request == null ) throw new PaymentException("PayPalProcessor.StripeKey", "La key está vacía");
+        if(stripeKey.isBlank())  throw new PaymentException("StripeProcessor.Request", "La request es null");
         System.out.println("Conectando a Stripe API mediante clave: " + stripeKey);
         publisher.publishEvent(new PaymentEvent(request.getAmount(),request.getUserEmail(), PaymentRequest.supplierEmail));
         // NOTA: Al ser asíncrono debería imprimir el siguiente System.out.println porque el hilo principal NO espera al listener
