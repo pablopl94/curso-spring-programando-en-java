@@ -4,7 +4,7 @@ public class PaymentRequest {
 
     private double amount;
     private String userEmail;
-    public static final String supplierEmail = "invoices@codejav-bootcamp.com";
+    public static final String SUPPLIER_EMAIL = "invoices@codejav-bootcamp.com";
 
     public PaymentRequest(double amount, String userEmail) {
         this.amount = amount;
@@ -26,6 +26,5 @@ public class PaymentRequest {
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
-
 
 }

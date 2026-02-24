@@ -19,18 +19,18 @@ import org.springframework.context.ApplicationEventPublisherAware;
 public abstract class AuditablePaymentProcessor implements PaymentProcessor, BeanNameAware, ApplicationEventPublisherAware {
 
     private String beanName;
-    protected Logger log;
-    protected ApplicationEventPublisher publisher;
-
-    public AuditablePaymentProcessor() {
-        log = LoggerFactory.getLogger(this.getClass().getName());
-        log.info("INICIALIZANDO EL BEAN: {}", this.getClass().getSimpleName());
-    }
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    private ApplicationEventPublisher publisher;
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }
+
+    public ApplicationEventPublisher getPublisher() {
+        return publisher;
+    }
+
     @Override
     public void setBeanName(String name) {
         this.beanName = name;
@@ -45,5 +45,6 @@ public abstract class AuditablePaymentProcessor implements PaymentProcessor, Bea
     private void destroy(){
         log.info("[LOG] Cerrando conexiones de {} antes del apagado...", beanName);
     }
+
 
 }
