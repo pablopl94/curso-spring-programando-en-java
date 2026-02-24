@@ -27,8 +27,8 @@ public class PaypalProcessor extends AuditablePaymentProcessor{
 
     @Override
     public PaymentResponse process(PaymentRequest request) {
-        if(request == null ) throw new PaymentException("Paypal.PaypalKey", "La key está vacía");
-        if(paypalKey == null || paypalKey.isBlank())  throw new PaymentException("Paypal.Request", "La request es null");
+        if(request == null) throw new PaymentException("Paypal.Request", "La request no puede ser nula");
+        if(paypalKey == null || paypalKey.isBlank()) throw new PaymentException("Paypal.PaypalKey", "La key de Paypal está vacía");
 
         log.debug("Conectando a Paypal API mediante clave: {}", paypalKey);
         StatusPaymentEnum status = evalutedPayment(request.getAmount());
