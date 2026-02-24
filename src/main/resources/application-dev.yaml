@@ -5,3 +5,8 @@ spring:
 
 server: # NOTA: server va al mismo nivel que spring
   port: 8081
+
+#Añadido debug para ver los logs en desarrollo
+logging:
+  level:
+    com.programandoenjava.bootcamp_1_2026: DEBUG
