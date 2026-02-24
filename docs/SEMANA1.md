@@ -1,8 +1,5 @@
----
 
 ## SEMANA 1 - COMANDOS PARA EJECUTAR LA APLICACIÓN
-
----
 
 ### 1.1 Entorno de desarrollo (MockProcessor, puerto 8081)
 ```bash
