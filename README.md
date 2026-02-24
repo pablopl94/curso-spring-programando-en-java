@@ -12,10 +12,10 @@ prometo que juntos los conseguiremos, además de nos lo pasaremos bien en el cam
 
 ## 📋 Índice de las tareas semanales
 
-| Semana | Tema                                        |
-|--------|---------------------------------------------|
-| [Semana 1](docs/semana-1.md) | Comandos para ejecutar la aplicación        |
-| [Semana 2](docs/semana-2.md) | Ciclo de vida Bean, interceptores y filtros |
+| Semana                      | Tema                                        |
+|-----------------------------|---------------------------------------------|
+| [Semana 1](docs/SEMANA1.md) | Comandos para ejecutar la aplicación        |
+| [Semana 2](docs/SEMANA2.md) | Ciclo de vida Bean, interceptores y filtros |
 
 ---
 
