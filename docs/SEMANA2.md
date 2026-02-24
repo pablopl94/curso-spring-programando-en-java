@@ -1,5 +1,4 @@
 ## SEMANA 2 — CICLO DE VIDA, INTERCEPTORES Y FILTROS
----
 
 ### Introducción
 
