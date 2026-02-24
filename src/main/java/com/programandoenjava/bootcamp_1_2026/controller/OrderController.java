@@ -2,6 +2,7 @@ package com.programandoenjava.bootcamp_1_2026.controller;
 
 
 import com.programandoenjava.bootcamp_1_2026.model.PaymentRequest;
+import com.programandoenjava.bootcamp_1_2026.model.PaymentResponse;
 import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,8 @@ public class OrderController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<PaymentRequest> checkout(@RequestBody PaymentRequest request) {
-        paymentProcessor.process(request);
-        return ResponseEntity.ok(request);
+    public ResponseEntity<PaymentResponse> checkout(@RequestBody PaymentRequest request) {
+        PaymentResponse response = paymentProcessor.process(request);
+        return ResponseEntity.ok().body(response);
     }
 }

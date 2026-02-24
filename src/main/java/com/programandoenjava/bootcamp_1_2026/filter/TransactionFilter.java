@@ -21,9 +21,9 @@ public class TransactionFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.equals("/api/order/checkout")) {
+        if (path != null && path.equals("/api/order/checkout")) {
             String header = request.getHeader("X-Transaction-Id");
-            if (header == null) {
+            if (header == null || header.isBlank()) {
                 response.sendError(400);
                 return;
             }
