@@ -5,4 +5,3 @@ spring:
 
 server: # NOTA: server va al mismo nivel que spring
   port: 8081
-
