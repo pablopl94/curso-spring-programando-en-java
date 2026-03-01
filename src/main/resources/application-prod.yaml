@@ -2,12 +2,16 @@ spring:
   config:
     activate:
       on-profile: prod # Se define que este .yaml es para el profile "prod"
+  datasource:
+    url: jdbc:h2:mem:orderdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
 server:
-  port: 443
+  port: 8081
 
-# Aquí defino las propiedades de la aplicación, app es una convención
-# podría ser feature o cualquier cosa
+    # Aquí defino las propiedades de la aplicación, app es una convención
 app:
   payment-provider: paypal # Propiedad que indica que servicio se va a usar para los pagos en "prod"
   stripe-key: ${STRIPE_API_KEY}
