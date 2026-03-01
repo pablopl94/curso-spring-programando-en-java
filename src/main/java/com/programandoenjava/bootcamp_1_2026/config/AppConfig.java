@@ -2,6 +2,10 @@ package com.programandoenjava.bootcamp_1_2026.config;
 
 import com.blazebit.persistence.Criteria;
 import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.view.EntityViewManager;
+import com.blazebit.persistence.view.EntityViews;
+import com.blazebit.persistence.view.spi.EntityViewConfiguration;
+import com.programandoenjava.bootcamp_1_2026.orders.model.projection.OrderDashboardView;
 import com.programandoenjava.bootcamp_1_2026.payments.service.PaymentProcessor;
 import com.programandoenjava.bootcamp_1_2026.payments.service.impl.MockProcessor;
 import jakarta.persistence.EntityManagerFactory;
@@ -24,6 +28,13 @@ public class AppConfig {
     @Bean
     public CriteriaBuilderFactory criteriaBuilderFactory(EntityManagerFactory emf){
         return Criteria.getDefault().createCriteriaBuilderFactory(emf);
+    }
+
+    @Bean
+    public EntityViewManager entityViewManager(CriteriaBuilderFactory cbf) {
+        EntityViewConfiguration config = EntityViews.createDefaultConfiguration();
+        config.addEntityView(OrderDashboardView.class);
+        return config.createEntityViewManager(cbf);
     }
 
 }
