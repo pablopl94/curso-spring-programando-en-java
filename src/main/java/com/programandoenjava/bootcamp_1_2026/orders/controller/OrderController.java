@@ -7,6 +7,7 @@ import com.programandoenjava.bootcamp_1_2026.orders.model.api.response.OrderView
 import com.programandoenjava.bootcamp_1_2026.orders.model.service.output.OrderOutputDto;
 import com.programandoenjava.bootcamp_1_2026.orders.model.service.output.OrderSummaryOutputDto;
 import com.programandoenjava.bootcamp_1_2026.orders.model.service.output.OrderViewOutputDto;
+import com.programandoenjava.bootcamp_1_2026.orders.service.OrderDashboardService;
 import com.programandoenjava.bootcamp_1_2026.orders.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,13 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService service;
+    private final OrderDashboardService dashboardService;
     private final OrderMapper mapper;
 
-    public OrderController(OrderService service, OrderMapper mapper) {
+    public OrderController(OrderService service, OrderMapper mapper, OrderDashboardService dashboardService) {
         this.service = service;
         this.mapper = mapper;
+        this.dashboardService = dashboardService;
     }
 
     @GetMapping("")
@@ -67,13 +70,13 @@ public class OrderController {
         return ResponseEntity.ok().body(response);
     }
 
-//    @GetMapping("/view")
-//    public ResponseEntity<List<OrderViewResponseDto>> getView() {
-//        List<OrderViewOutputDto> outputService = service.getView();
-//        List<OrderViewResponseDto> response = outputService.stream()
-//                .map(this.mapper::outputViewToViewResponseDto)
-//                .toList();
-//        return ResponseEntity.ok().body(response);
-//    }
+    @GetMapping("/view")
+    public ResponseEntity<List<OrderViewResponseDto>> getDashboardView() {
+        List<OrderViewOutputDto> outputService = dashboardService.getDashboard();
+        List<OrderViewResponseDto> response = outputService.stream()
+                .map(this.mapper::outputViewToViewResponseDto)
+                .toList();
+        return ResponseEntity.ok().body(response);
+    }
 
 }
