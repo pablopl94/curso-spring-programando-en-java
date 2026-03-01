@@ -5,6 +5,7 @@ import com.programandoenjava.bootcamp_1_2026.orders.model.api.response.OrderResp
 import com.programandoenjava.bootcamp_1_2026.orders.model.api.response.OrderSummaryResponseDto;
 import com.programandoenjava.bootcamp_1_2026.orders.model.api.response.OrderViewResponseDto;
 import com.programandoenjava.bootcamp_1_2026.orders.model.entity.Order;
+import com.programandoenjava.bootcamp_1_2026.orders.model.projection.OrderDashboardView;
 import com.programandoenjava.bootcamp_1_2026.orders.model.projection.OrderSummary;
 import com.programandoenjava.bootcamp_1_2026.orders.model.service.input.OrderInputDto;
 import com.programandoenjava.bootcamp_1_2026.orders.model.service.output.OrderOutputDto;
@@ -42,10 +43,10 @@ public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, Order
     // PROJECTION → OUTPUT SUMMARY
     OrderSummaryOutputDto projectionToOutputSummaryDto(OrderSummary projection);
 
-//    // OUTPUT VIEW → VIEW RESPONSE
-//    OrderViewResponseDto outputViewToViewResponseDto(OrderViewOutputDto output);
-//
-//    // VIEW → OUTPUT VIRE
-//    OrderViewOutputDto viewToOutputViewDto(OrderView view);
+    // OUTPUT VIEW → VIEW RESPONSE
+    OrderViewResponseDto outputViewToViewResponseDto(OrderViewOutputDto output);
+
+    // VIEW → OUTPUT VIRE
+    OrderViewOutputDto viewToOutputViewDto(OrderDashboardView view);
 
 }
