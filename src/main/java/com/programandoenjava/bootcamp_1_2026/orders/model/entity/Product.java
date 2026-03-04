@@ -2,6 +2,7 @@ package com.programandoenjava.bootcamp_1_2026.orders.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Builder
@@ -11,6 +12,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "product")
+@BatchSize(size = 20)
 public class Product {
 
     @Id
