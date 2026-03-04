@@ -28,7 +28,6 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @BatchSize(size = 20)
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
