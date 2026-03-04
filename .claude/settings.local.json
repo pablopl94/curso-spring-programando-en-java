@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl \"http://localhost:8081/api/orders/search?createdAtFrom=2026-01-01&createdAtTo=2026-02-28&productName=Monitor\")",
+      "Bash(for i in {1..5})",
+      "Bash(do echo \"Intento $i:\")",
+      "Bash(time curl -s \"http://localhost:8081/api/orders/search?productName=Monitor\")",
+      "Bash(done)",
+      "Bash(time curl -s \"http://localhost:8081/api/orders/search?createdAtFrom=2026-01-01&createdAtTo=2026-02-28&totalAmountMin=50&totalAmountMax=500&productName=Monitor\")",
+      "Bash(time curl -s \"http://localhost:8081/api/orders/search?totalAmountMin=200\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
