@@ -2,7 +2,7 @@ package com.programandoenjava.bootcamp_1_2026.orders.model.service.output;
 
 import com.programandoenjava.bootcamp_1_2026.orders.model.entity.OrderItem;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public record OrderOutputDto(
@@ -11,6 +11,6 @@ public record OrderOutputDto(
         String processorName,
         String customerName,
         String customerEmail,
-        LocalDate createdAt,
+        LocalDateTime createdAt,
         Set<OrderItem> items
 ) { }
