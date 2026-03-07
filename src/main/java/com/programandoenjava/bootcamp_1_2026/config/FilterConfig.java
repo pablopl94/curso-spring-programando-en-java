@@ -1,6 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.config;
 
-import com.programandoenjava.bootcamp_1_2026.payments.interceptor.PerformanceInterceptor;
+import com.programandoenjava.bootcamp_1_2026.payment.interceptor.PerformanceInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
