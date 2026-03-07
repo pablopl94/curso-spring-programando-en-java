@@ -19,25 +19,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, OrderResponseDto, OrderInputDto, OrderOutputDto> {
 
-    // REQUEST → INPUT
-    @Override
-    OrderInputDto requestToInputDto(OrderRequestDto request);
-
-    // INPUT → ENTITY
     @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "totalAmount", ignore = true)
     @Mapping(target = "processorName", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     Order inputToEntity(OrderInputDto input);
-
-    // ENTITY → OUTPUT
-    @Override
-    OrderOutputDto entityToOutputDto(Order entity);
-
-    // OUTPUT → RESPONSE
-    @Override
-    OrderResponseDto outputToResponseDto(OrderOutputDto output);
 
     // OUTPUT SUMMARY → SUMMARY RESPONSE
     OrderSummaryResponseDto outputSummaryToSummaryResponseDto(OrderSummaryOutputDto output);
