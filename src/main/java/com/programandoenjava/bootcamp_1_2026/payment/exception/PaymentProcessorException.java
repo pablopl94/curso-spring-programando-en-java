@@ -1,0 +1,20 @@
+package com.programandoenjava.bootcamp_1_2026.payment.exception;
+
+public class PaymentProcessorException extends RuntimeException {
+
+    private final String code;
+
+    public PaymentProcessorException(String code, String message) {
+        super(message);
+        this.code = code;
+    }
+
+    public PaymentProcessorException(String code, String message, Throwable cause) {
+        super(message, cause);
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+}
