@@ -1,18 +1,45 @@
 spring:
+  # Propiedades del perfil
   config:
     activate:
       on-profile: prod # Se define que este .yaml es para el profile "prod"
+  # Configuración DB de momento H2 para pruebas en prod cambiar solo es para probar PROD
   datasource:
     url: jdbc:h2:mem:orderdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  h2:
+    console:
+      enabled: false
+      path: /h2-console
 
+  #Configuración JPA
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        generate_statistics: false
+        format_sql: false
+        jdbc:
+          batch_size: 20 # IMPORTANTE: Esto no funciona a nivel de lectura SOLO ESCRITURA
+          batch_versioned_data: true # IMPORTANTE: Permite batching en entidades que usan @Version
+        order_inserts: true #Agrupa todos los INSERT del mismo tipo de entidad juntos
+        order_updates: true #Agrupa todos los UPDATE del mismo tipo de entidad juntos
+
+# Puerto
 server:
   port: 8081
 
-    # Aquí defino las propiedades de la aplicación, app es una convención
+# Aquí defino las propiedades de la aplicación, app es una convención
 app:
   payment-provider: paypal # Propiedad que indica que servicio se va a usar para los pagos en "prod"
   stripe-key: ${STRIPE_API_KEY}
   paypal-key: ${PAYPAL_API_KEY}
+
+# Loggin en modo INFO
+logging:
+  level:
+    com.programandoenjava.bootcamp_1_2026: INFO

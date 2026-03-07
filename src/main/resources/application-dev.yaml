@@ -26,6 +26,8 @@ spring:
         order_updates: true #Agrupa todos los UPDATE del mismo tipo de entidad juntos
 server:
   port: 8081
+
+# Loggin en modo DEBUG
 logging:
   level:
     com.programandoenjava.bootcamp_1_2026: DEBUG
