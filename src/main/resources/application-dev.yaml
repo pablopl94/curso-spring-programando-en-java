@@ -19,6 +19,11 @@ spring:
       hibernate:
         generate_statistics: true
         format_sql: true
+        jdbc:
+          batch_size: 20 # IMPORTANTE: Esto no funciona a nivel de lectura SOLO ESCRITURA
+          batch_versioned_data: true # IMPORTANTE: Permite batching en entidades que usan @Version
+        order_inserts: true #Agrupa todos los INSERT del mismo tipo de entidad juntos
+        order_updates: true #Agrupa todos los UPDATE del mismo tipo de entidad juntos
 server:
   port: 8081
 logging:
