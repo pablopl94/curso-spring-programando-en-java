@@ -1,4 +1,4 @@
-# Repositorio de tareas: De Programador a Arquitecto Java
+# SEMANA 1 - DI, CONFIGURACIÓN DE ENTORNOS Y PERFILES
 
 ¡Bienvenido a tu repositorio personal del Bootcamp! Este no es un proyecto de juguete.
 Es el laboratorio donde vas a aplicar las tareas de nuestros módulos y poder darte feedback personalmente sobre una base
