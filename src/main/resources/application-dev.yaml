@@ -1,7 +1,5 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
+  # Configuración DB H2 para desarrollo
   datasource:
     url: jdbc:h2:mem:orderdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
@@ -11,23 +9,19 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  # Configuración JPA específica de dev
   jpa:
-    hibernate:
-      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         generate_statistics: true
         format_sql: true
-        jdbc:
-          batch_size: 20 # IMPORTANTE: Esto no funciona a nivel de lectura SOLO ESCRITURA
-          batch_versioned_data: true # IMPORTANTE: Permite batching en entidades que usan @Version
-        order_inserts: true #Agrupa todos los INSERT del mismo tipo de entidad juntos
-        order_updates: true #Agrupa todos los UPDATE del mismo tipo de entidad juntos
+
+# Puerto
 server:
   port: 8081
 
-# Loggin en modo DEBUG
+# Logging en modo DEBUG
 logging:
   level:
     com.programandoenjava.bootcamp_1_2026: DEBUG
