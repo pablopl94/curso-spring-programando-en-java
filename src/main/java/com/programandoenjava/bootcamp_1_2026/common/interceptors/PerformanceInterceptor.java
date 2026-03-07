@@ -1,4 +1,4 @@
-package com.programandoenjava.bootcamp_1_2026.payment.interceptor;
+package com.programandoenjava.bootcamp_1_2026.common.interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+/**
+ *  Interceptor para medir tiempos de respuesta en las peticiones de nuestra API
+ */
 public class PerformanceInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(PerformanceInterceptor.class);
