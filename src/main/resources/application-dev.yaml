@@ -17,6 +17,17 @@ spring:
         generate_statistics: true
         format_sql: true
 
+# Configuración JWT
+application:
+  security:
+    jwt:
+      #Clave de 256 Bits generada en https://jwtsecrets.com/,
+      #la dejo educativamente, pero debería ser una variable de entorno
+      secret-key: 99da4c928ac546b3e267b11f1ec1c189d331b4a151d96a811c466696d545b194
+      expiration: 86400000 # 1 día en ms
+      refresh-token:
+        expiration: 604800000 # 7 días en ms
+
 # Puerto
 server:
   port: 8081
