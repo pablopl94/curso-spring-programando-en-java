@@ -1,14 +1,20 @@
 package com.programandoenjava.bootcamp_1_2026.config;
 
-import com.programandoenjava.bootcamp_1_2026.service.PaymentProcessor;
-import com.programandoenjava.bootcamp_1_2026.service.impl.MockProcessor;
+import com.blazebit.persistence.Criteria;
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.view.EntityViewManager;
+import com.blazebit.persistence.view.EntityViews;
+import com.blazebit.persistence.view.spi.EntityViewConfiguration;
+import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
+import com.programandoenjava.bootcamp_1_2026.payment.processor.PaymentProcessor;
+import com.programandoenjava.bootcamp_1_2026.payment.processor.MockProcessor;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+public class AppConfig {
 
     // Este method define un bean de tipo PaymentProcessor que Spring puede inyectar
     // @ConditionalOnMissingBean indica que este bean solo se crea si NO hay otro PaymentProcessor registrado
@@ -17,6 +23,18 @@ public class AppConfig implements WebMvcConfigurer {
     @ConditionalOnMissingBean(PaymentProcessor.class)
     public PaymentProcessor getPaymentProcessorDefault() {
         return new MockProcessor();
+    }
+
+    @Bean
+    public CriteriaBuilderFactory criteriaBuilderFactory(EntityManagerFactory emf){
+        return Criteria.getDefault().createCriteriaBuilderFactory(emf);
+    }
+
+    @Bean
+    public EntityViewManager entityViewManager(CriteriaBuilderFactory cbf) {
+        EntityViewConfiguration config = EntityViews.createDefaultConfiguration();
+        config.addEntityView(OrderDashboardView.class);
+        return config.createEntityViewManager(cbf);
     }
 
 }
