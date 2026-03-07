@@ -137,3 +137,6 @@ INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 5, 3, 89.99);
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 2, 1, 15.5);
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 11, 1, 149.99);
+
+INSERT INTO roles (id, name) VALUES (1, 'USER');
+INSERT INTO roles (id, name) VALUES (2, 'ADMIN');
