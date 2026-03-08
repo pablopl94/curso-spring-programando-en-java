@@ -1,10 +1,12 @@
 package com.programandoenjava.bootcamp_1_2026.order.service;
 
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.request.ShoppingCartRequest;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.CheckoutResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderSummaryOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderViewOutputDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class OrderService {
     private final OrderCrudService crudService;
     private final OrderFilterService filterService;
     private final OrderViewService viewService;
+    private final CheckoutService checkoutService;
 
     //Delega a crudService
     public List<OrderOutputDto> getAll() {
@@ -28,12 +31,17 @@ public class OrderService {
     }
 
     //Delega a viewService
-    public List<OrderSummaryOutputDto> getSummary() {
+    public List<OrderOutputDto> getSummary() {
         return viewService.getSummary();
     }
 
-    public List<OrderViewOutputDto> getDashboardView() {
+    public List<OrderViewResponseDto> getDashboardView() {
         return viewService.getDashboardView();
+    }
+
+    //Delegar a CheckoutService
+    public CheckoutResponseDto calculateCheckout(ShoppingCartRequest request, Authentication authentication) {
+        return checkoutService.calculateCheckout(request, authentication);
     }
 
 }

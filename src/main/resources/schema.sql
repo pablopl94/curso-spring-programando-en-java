@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS users (
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     password VARCHAR(60) NOT NULL,
-    rol_id INTEGER NOT NULL,
-    FOREIGN KEY (rol_id) REFERENCES roles(id)
+    role_id INTEGER NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 -- Índices para optimizar búsquedas
@@ -49,4 +49,4 @@ CREATE INDEX IF NOT EXISTS idx_orders_total_amount ON orders(total_amount);
 CREATE INDEX IF NOT EXISTS idx_product_name ON product(name);
 CREATE INDEX IF NOT EXISTS idx_order_item_order_id ON order_item(order_id);
 CREATE INDEX IF NOT EXISTS idx_order_item_product_id ON order_item(product_id);
-CREATE INDEX IF NOT EXISTS idx_users_roles_id ON users(rol_id);
+CREATE INDEX IF NOT EXISTS idx_users_roles_id ON users(role_id);

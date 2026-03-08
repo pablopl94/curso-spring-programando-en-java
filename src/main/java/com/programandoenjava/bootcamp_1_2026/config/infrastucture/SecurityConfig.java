@@ -3,12 +3,11 @@ package com.programandoenjava.bootcamp_1_2026.config.infrastucture;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -29,8 +28,24 @@ public class SecurityConfig {
                 // el servidor no guardara ningún usuario
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest()
-                        .authenticated()
+                        //Login y register
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        //Orders
+                        .requestMatchers(HttpMethod.POST, "/api/order/checkout").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/order/**").hasRole("ADMIN")
+                        //Payments
+                        .requestMatchers(HttpMethod.POST, "/api/payments").authenticated()
+                        //Usuarios
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        //OrderItems
+                        .requestMatchers(HttpMethod.GET,"/api/order-items/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/order-items/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/order-items/**").hasRole("ADMIN")
+                        //Productos
+                        .requestMatchers(HttpMethod.GET,"/api/products/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/products/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 //Esto activa el filtro de Resource Server
                 // Resource Server lleva el filtro de Spring automático, no hace falta crea un filtro
@@ -39,7 +54,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder(@Value("${application.security.jwt.secret-key}")String secret){
+    public JwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.secret-key}")String secret){
         //Definimos cómo codificar (usando nuestra clave Nimbus/Secret)
         SecretKey secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         return NimbusJwtDecoder

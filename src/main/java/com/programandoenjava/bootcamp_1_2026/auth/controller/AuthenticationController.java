@@ -9,6 +9,7 @@ import com.programandoenjava.bootcamp_1_2026.user.model.application.input.UserIn
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class AuthenticationController {
     private final UserMapper userMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<TokenResponseDto> register(RegisterRequestDto request){
+    public ResponseEntity<TokenResponseDto> register(@RequestBody RegisterRequestDto request){
 
         UserInputDto inputDto = userMapper.registerRequestToInput(request);
 
@@ -29,10 +30,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login(LoginRequestDto request){
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequestDto request){
 
         UserInputDto inputDto = userMapper.loginRequestToInput(request);
-
         return ResponseEntity.ok().body(authenticationService.authenticate(inputDto));
     }
 }

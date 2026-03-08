@@ -2,14 +2,15 @@ package com.programandoenjava.bootcamp_1_2026.order.controller;
 
 import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.request.ShoppingCartRequest;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.CheckoutResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderSummaryOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderViewOutputDto;
 import com.programandoenjava.bootcamp_1_2026.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +27,12 @@ public class OrderController {
         this.mapper = mapper;
     }
 
-
     @GetMapping()
     public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String view) {
 
         // Usa proyecciones para traer solo algunos campos
         if (view != null && view.equals("summary")) {
-            List<OrderSummaryOutputDto> outputService = service.getSummary();
+            List<OrderOutputDto> outputService = service.getSummary();
             List<OrderSummaryResponseDto> response = outputService.stream()
                     .map(this.mapper::outputSummaryToSummaryResponseDto)
                     .toList();
@@ -41,10 +41,7 @@ public class OrderController {
 
         // Usa Blaze EntityViews con agregaciones
         if (view != null && view.equals("dashboard")) {
-            List<OrderViewOutputDto> outputService = service.getDashboardView();
-            List<OrderViewResponseDto> response = outputService.stream()
-                    .map(this.mapper::outputViewToViewResponseDto)
-                    .toList();
+            List<OrderViewResponseDto> response = service.getDashboardView();
             return ResponseEntity.ok().body(response);
         }
 
@@ -66,5 +63,10 @@ public class OrderController {
         return ResponseEntity.ok().body(response);
     }
 
+    // Emula el  checkout en base a un shopping ficticio
+    @PostMapping("/checkout")
+    public ResponseEntity<CheckoutResponseDto> checkout(@RequestBody ShoppingCartRequest request, Authentication authentication){
+        return ResponseEntity.ok().body(service.calculateCheckout(request,authentication));
+    }
 }
 

@@ -7,4 +7,5 @@ public interface OrderSummary {
     double getTotalAmount();
     LocalDateTime getCreatedAt();
     String getProcessorName();
+
 }

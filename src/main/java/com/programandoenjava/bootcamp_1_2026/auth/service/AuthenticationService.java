@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,46 +33,35 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
+
+    @Transactional
     public TokenResponseDto register(UserInputDto userDto) {
+        if (userRepository.findByEmail(userDto.email()).isPresent()) {
+            throw new UserAlreadyExistsException("Ya existe un usuario con el email: " + userDto.email());
+        }
+
+        Role userRole = roleRepository.findByName(RoleEnum.USER)
+                .orElseThrow(() -> new RoleNotFoundException(RoleEnum.USER));
+
+        User user = User.builder()
+                .firstname(userDto.firstname())
+                .lastname(userDto.lastname())
+                .email(userDto.email())
+                .password(passwordEncoder.encode(userDto.password()))
+                .role(userRole)
+                .build();
+
+        userRepository.save(user);
 
         try {
-            if (userRepository.findByEmail(userDto.email()).isPresent()) {
-                throw new UserAlreadyExistsException("Ya existe un usuario con el email: " + userDto.email());
-            }
-
-            Role userRole = roleRepository.findByName(RoleEnum.USER).orElseThrow(() -> new RoleNotFoundException(RoleEnum.USER));
-            User user = User.builder()
-                    .firstname(userDto.firstname())
-                    .lastname(userDto.lastname())
-                    .email(userDto.email())
-                    .password(passwordEncoder.encode(userDto.password()))
-                    .role(userRole)
-                    .build();
-
-            String newToken;
-
-            try {
-                newToken = jwtService.createToken(user);
-            } catch (JOSEException e) {
-                throw new RuntimeException("Error al crear el token " + e);
-            }
-
-            try {
-                userRepository.save(user);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("Error al guarda el usuario " + e);
-            }
-
-            return TokenResponseDto.builder()
-                    .token(newToken)
-                    .build();
-
-        } catch (DataAccessException e) {
-            throw new ServiceException("Error al registrar el usuario " + e);
+            String token = jwtService.createToken(user);
+            return TokenResponseDto.builder().token(token).build();
+        } catch (JOSEException e) {
+            throw new ServiceException("Error al crear el token", e);
         }
     }
 
-    public TokenResponseDto authenticate(UserInputDto userDto) throws JOSEException {
+    public TokenResponseDto authenticate(UserInputDto userDto){
         /**
          * Con AuthenticationManager spring ya válida el usuario:
          *  - usa userDetailService para buscar el usuario (si no existe lanza excepción)
@@ -90,7 +80,13 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(userDto.email()).orElseThrow(() -> new UserNotFoundException(userDto.email()));
 
         //Generamos el token
-        String newToken = jwtService.createToken(user);
+        String newToken;
+
+        try{
+           newToken = jwtService.createToken(user);
+        } catch (JOSEException e) {
+            throw new RuntimeException("Error al crear el token " + e);
+        }
 
         return TokenResponseDto.builder()
                 .token(newToken)

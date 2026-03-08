@@ -4,9 +4,9 @@ import com.programandoenjava.bootcamp_1_2026.payment.model.constants.StatusPayme
 
 import java.time.LocalDateTime;
 
-public record PaymentResponse(
+public record PaymentResponseDto(
         String transactionId,
         StatusPaymentEnum status,
         LocalDateTime processedAt,
-        double amount
+        Double amount
 ) {}

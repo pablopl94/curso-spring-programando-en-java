@@ -7,6 +7,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.programandoenjava.bootcamp_1_2026.user.model.entity.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -16,11 +18,11 @@ import java.util.Date;
 public class JwtService {
 
     private final String secretKey;
-    private final String expiration;
+    private final long expiration;
 
     public JwtService(
-            @Value("${application.security.jwt.secret-key}") String secret,
-            @Value("${application.security.jwt.expiration}") String expiration
+            @Value("${spring.security.oauth2.resourceserver.jwt.secret-key}") String secret,
+            @Value("${spring.security.oauth2.resourceserver.jwt.expiration}") long expiration
     ) {
         this.secretKey = secret;
         this.expiration = expiration;
@@ -95,12 +97,20 @@ public class JwtService {
      *
      * @param claimName El claimName es simplemente el nombre del dato que quieres sacar del payload del token,
      *                  cada uno tiene un nombre interno. ("sub","iss", ...)
-     * @param token     Token JWT como cadena de texto (header, payload , firma)
+     * @param token Token JWT como cadena de texto (header, payload , firma)
      * @return El valor del claim como String
      * @throws ParseException Error al parsear el token
      */
     public String getClaim(String claimName, String token) throws ParseException {
         SignedJWT signed = SignedJWT.parse(token);
         return (String) signed.getJWTClaimsSet().getClaim(claimName);
+    }
+
+
+    public String getClaimEmail(Authentication authentication) {
+        // Obtener el JWT del Authentication
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        // Extraer el email de los claims
+        return jwt.getClaimAsString("email");
     }
 }

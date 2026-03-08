@@ -1,8 +1,8 @@
 package com.programandoenjava.bootcamp_1_2026.payment.processor;
 
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentProcessorException;
-import com.programandoenjava.bootcamp_1_2026.payment.model.api.PaymentRequest;
-import com.programandoenjava.bootcamp_1_2026.payment.model.api.PaymentResponse;
+import com.programandoenjava.bootcamp_1_2026.payment.model.api.PaymentRequestDto;
+import com.programandoenjava.bootcamp_1_2026.payment.model.api.PaymentResponseDto;
 import com.programandoenjava.bootcamp_1_2026.payment.model.constants.StatusPaymentEnum;
 import com.programandoenjava.bootcamp_1_2026.payment.model.event.PaymentEvent;
 import org.slf4j.Logger;
@@ -20,25 +20,25 @@ public class MockProcessor extends AuditablePaymentProcessor {
     private static final Logger log = LoggerFactory.getLogger(MockProcessor.class);
 
     @Override
-    public PaymentResponse process(PaymentRequest request) {
+    public PaymentResponseDto process(PaymentRequestDto request) {
         if (request == null) throw new PaymentProcessorException("MockProcessor.Request", "La Request no puede ser nula");
-        if (request.getAmount() < 0)
+        if (request.totalAmount() < 0)
             throw new PaymentProcessorException("MockProcessor.Request.amount", "El monto no puede ser negativo");
 
         log.debug("Probando MockProcessor desde desarrollo ...");
-        StatusPaymentEnum status = evalutedPayment(request.getAmount());
+        StatusPaymentEnum status = evalutedPayment(request.totalAmount());
 
         if (status == null) throw new PaymentProcessorException("MockProcessor.Response.status", "El estado no puede ser nulo");
         if (status.equals(StatusPaymentEnum.ACCEPTED)) {
-            getPublisher().publishEvent(new PaymentEvent(request.getAmount(), request.getUserEmail(), PaymentRequest.SUPPLIER_EMAIL));
+            getPublisher().publishEvent(new PaymentEvent(request.totalAmount(), request.userEmail(), request.provider()));
         }
 
         log.debug("Procesando mensaje de respuesta ....");
-        return new PaymentResponse(
+        return new PaymentResponseDto(
                 UUID.randomUUID().toString(),
                 status,
                 LocalDateTime.now(),
-                request.getAmount()
+                request.totalAmount()
         );
     }
 }

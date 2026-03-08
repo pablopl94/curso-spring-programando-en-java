@@ -24,7 +24,6 @@ public abstract class UserMapper implements GenericMapper<User, UserRequestDto, 
 
     @Override
     @Mapping(source = "idRole", target = "role", qualifiedByName = "mapRol")
-    @Mapping(target = "order", ignore = true)
     public abstract User inputToEntity(UserInputDto input);
 
     @Named("mapRol")
