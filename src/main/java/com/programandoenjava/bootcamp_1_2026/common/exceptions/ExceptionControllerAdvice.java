@@ -6,6 +6,8 @@ import com.programandoenjava.bootcamp_1_2026.orderItem.exception.OrderItemNotFou
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentProcessorException;
 import com.programandoenjava.bootcamp_1_2026.product.exception.ProductNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.user.exception.RoleNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +44,12 @@ public class ExceptionControllerAdvice {
                 .body(new ErrorResponse("ORDER_NOT_FOUND", ex.getMessage()));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse("USER_NOT_FOUND", ex.getMessage()));
+    }
+
     @ExceptionHandler(OrderItemNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleOrderItemNotFoundException(OrderItemNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -52,6 +60,12 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ErrorResponse> handleProductNotFoundException(ProductNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse("ORDER_ITEM_NOT_FOUND", ex.getMessage()));
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRoleNotFoundException(RoleNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse("ROLE_NOT_FOUND", ex.getMessage()));
     }
 }
 

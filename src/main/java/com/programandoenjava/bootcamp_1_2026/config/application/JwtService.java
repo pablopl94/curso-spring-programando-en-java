@@ -5,6 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.programandoenjava.bootcamp_1_2026.user.model.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,13 @@ public class JwtService {
      *
      * @return JWTClaimsSet información del token
      */
-    public JWTClaimsSet createClaims() {
+    public JWTClaimsSet createClaims(User user) {
         return new JWTClaimsSet.Builder()
-                .subject("user123") //Id del usuario
+                .subject(user.getId().toString()) //Id del usuario
+                .claim("email",user.getEmail()) // Le añadimos el email en los claims
+                .claim("role", user.getRole().getName().name()) // Le añadimos en los claims el rol
                 .issuer("https://programandoenjava.com") //Quien creo el token o donde se creó
+                .issueTime(new Date(System.currentTimeMillis()))// Fecha en la que se creó
                 .expirationTime(new Date(System.currentTimeMillis() + expiration)) //Cuando caduca el token
                 .build();
     }
@@ -41,9 +45,9 @@ public class JwtService {
     /**
      * Crea el token y lo firma
      */
-    public String createToken() throws JOSEException {
+    public String createToken(User user) throws JOSEException {
         // Primero crea los claims con su method creado anteriormente
-        final JWTClaimsSet claims = createClaims();
+        final JWTClaimsSet claims = createClaims(user);
         // Crea el objeto del firmante que se encarga de firmar, usando nuestro secretKey
         JWSSigner signer = new MACSigner(secretKey);
         // Crea el objeto del token (objeto de la cabecera + claims)

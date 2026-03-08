@@ -1,5 +1,7 @@
 package com.programandoenjava.bootcamp_1_2026.user.mapper;
 
+import com.programandoenjava.bootcamp_1_2026.auth.dto.LoginRequestDto;
+import com.programandoenjava.bootcamp_1_2026.auth.dto.RegisterRequestDto;
 import com.programandoenjava.bootcamp_1_2026.common.mapper.GenericMapper;
 import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.user.model.api.request.UserRequestDto;
@@ -31,7 +33,8 @@ public abstract class UserMapper implements GenericMapper<User, UserRequestDto, 
         return roleRepository.getReferenceById(idRole);
     }
 
-    public abstract UserInputDto authorizationRequestToInput(AuthorizationRequestDto dto);
+    public abstract UserInputDto registerRequestToInput(RegisterRequestDto dto);
 
+    public abstract UserInputDto loginRequestToInput(LoginRequestDto dto);
 
 }
