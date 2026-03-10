@@ -5,15 +5,19 @@ import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.application.input.OrderInputDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
 import com.programandoenjava.bootcamp_1_2026.order.repository.OrderRepository;
 import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
 import com.programandoenjava.bootcamp_1_2026.order.repository.projection.OrderSummary;
+import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
+import com.programandoenjava.bootcamp_1_2026.user.model.application.output.UserOutputDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,7 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final OrderMapper mapper;
+    private final OrderRepository orderRepository;
 
     public List<OrderResponseDto> processView(String view){
         // Usa proyecciones para traer solo algunos campos
@@ -92,6 +97,20 @@ public class OrderService {
         } catch (DataAccessException e) {
             throw new OrderServiceException("OrderService.Order.getDashboardView", "No se ha podido obtener el listado del dashboard view");
         }
+    }
+
+    public OrderOutputDto createOrder(PaymentInputDto payment, UserOutputDto user){
+        OrderInputDto newOrderInput = OrderInputDto.builder()
+                .customerEmail(user.getEmail())
+                .processorName(user.getName())
+                .processorName(payment.getPaymentProvider())
+                .items(payment.getItems())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Order newOrder = mapper.inputToEntity(newOrderInput);
+        orderRepository.save(newOrder);
+        return mapper.entityToOutputDto(newOrder);
     }
 
 

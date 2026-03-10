@@ -3,9 +3,9 @@ package com.programandoenjava.bootcamp_1_2026.orderItem.mapper;
 import com.programandoenjava.bootcamp_1_2026.common.mapper.GenericMapper;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.api.OrderItemRequestDto;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.api.OrderItemResponseDto;
-import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemInputDto;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemOutputDto;
+import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem;
 import com.programandoenjava.bootcamp_1_2026.product.mapper.ProductMapper;
 import com.programandoenjava.bootcamp_1_2026.product.model.application.ProductOutputDto;
 import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
@@ -36,5 +36,7 @@ public abstract class OrderItemMapper implements GenericMapper<OrderItem, OrderI
         Product product = productRepository.getReferenceById(idProduct);
         return productMapper.entityToOutputDto(product);
     }
+
+
 
 }
