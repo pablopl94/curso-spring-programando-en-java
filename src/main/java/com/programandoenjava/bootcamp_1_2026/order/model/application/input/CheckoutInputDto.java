@@ -10,6 +10,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-public class OrderInputDto {
+public class CheckoutInputDto {
+    private String emailCustomer;
+    private Double totalPrice;
     private Set<OrderItemInputDto> items;
 }

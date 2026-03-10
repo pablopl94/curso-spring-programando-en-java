@@ -29,11 +29,8 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "firstname")
-    private String firstname;
-
-    @Column(name = "lastname")
-    private String lastname;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "email")
     private String email;

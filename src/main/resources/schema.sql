@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS product (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     price DECIMAL(10,2) NOT NULL
+    stock INTEGER NOT NULL
 );
 
 -- Tabla de pedidos
@@ -18,7 +19,8 @@ CREATE TABLE IF NOT EXISTS orders (
     processor_name VARCHAR(50),
     customer_name VARCHAR(100),
     customer_email VARCHAR(100),
-    created_at DATE DEFAULT CURRENT_DATE
+    created_at DATE DEFAULT CURRENT_DATE,
+    version INTEGER NOT NULL
 );
 
 -- Tabla de items de pedido
@@ -36,8 +38,7 @@ CREATE TABLE IF NOT EXISTS order_item (
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(254) UNIQUE,
-    firstname VARCHAR(50) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     password VARCHAR(60) NOT NULL,
     role_id INTEGER NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles(id)

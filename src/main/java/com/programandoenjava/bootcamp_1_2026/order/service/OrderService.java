@@ -1,47 +1,98 @@
 package com.programandoenjava.bootcamp_1_2026.order.service;
 
+import com.programandoenjava.bootcamp_1_2026.order.exception.OrderServiceException;
+import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.request.ShoppingCartRequest;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.CheckoutResponseDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
+import com.programandoenjava.bootcamp_1_2026.order.repository.OrderRepository;
+import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
+import com.programandoenjava.bootcamp_1_2026.order.repository.projection.OrderSummary;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final OrderCrudService crudService;
-    private final OrderFilterService filterService;
-    private final OrderViewService viewService;
-    private final CheckoutService checkoutService;
+    private final OrderRepository repository;
+    private final OrderMapper mapper;
 
-    //Delega a crudService
+    public List<OrderResponseDto> processView(String view){
+        // Usa proyecciones para traer solo algunos campos
+        if (view != null && view.equals("summary")) {
+            return getSummary().stream()
+                    .map(this.mapper::outputToSummaryResponseDto)
+                    .collect(Collectors.toList());
+        }
+        // Usa Blaze EntityViews con agregaciones
+        if (view != null && view.equals("dashboard")) {
+            return getDashboardView().stream()
+                    .map(this.mapper::outPutToViewResponseDto)
+                    .map(OrderSummaryResponseDto.class::cast)
+                    .collect(Collectors.toList());
+        }
+        // Obtiene todas las orders usando @EntityGraph
+         return getAll().stream()
+                 .map(this.mapper::outputToResponseDto)
+                 .collect(Collectors.toList());
+    }
+
     public List<OrderOutputDto> getAll() {
-        return crudService.getAll();
+        try {
+            List<Order> orderList = repository.findAll();
+            return orderList.stream()
+                    .map(this.mapper::entityToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getAll", "No se ha podido obtener la lista de pedidos");
+        }
     }
 
-    //Delega a filterService
     public List<OrderOutputDto> searchWithFilters(RequestOrderFilter filter) {
-        return filterService.searchWithFilters(filter);
+        try {
+            List<Order> orderList = repository
+                    .findOrderByFilters(
+                            filter.createdAtFrom(),
+                            filter.createdAtTo(),
+                            filter.totalAmountMin(),
+                            filter.totalAmountMax(),
+                            filter.productName());
+            return orderList.stream()
+                    .map(this.mapper::entityToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.searchWithFilters", "No se ha podido obtener el listado de pedidos");
+        }
     }
 
-    //Delega a viewService
     public List<OrderOutputDto> getSummary() {
-        return viewService.getSummary();
+        try {
+            List<OrderSummary> orderList = repository.findOrderSummaryBy();
+            return orderList.stream()
+                    .map(this.mapper::projectionToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getSummary", "No se ha podido obtener el sumario de pedidos");
+        }
     }
 
-    public List<OrderViewResponseDto> getDashboardView() {
-        return viewService.getDashboardView();
+    public List<OrderOutputDto> getDashboardView() {
+        try {
+            List<OrderDashboardView> orderList = repository.findAllDashboard();
+            return orderList.stream()
+                    .map(this.mapper::viewToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getDashboardView", "No se ha podido obtener el listado del dashboard view");
+        }
     }
 
-    //Delegar a CheckoutService
-    public CheckoutResponseDto calculateCheckout(ShoppingCartRequest request, Authentication authentication) {
-        return checkoutService.calculateCheckout(request, authentication);
-    }
 
 }

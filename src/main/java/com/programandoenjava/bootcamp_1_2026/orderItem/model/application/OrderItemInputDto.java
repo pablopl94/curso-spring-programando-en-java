@@ -1,9 +1,14 @@
 package com.programandoenjava.bootcamp_1_2026.orderItem.model.application;
 
-import com.programandoenjava.bootcamp_1_2026.product.model.application.ProductOutputDto;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-public record OrderItemInputDto(
-        Integer quantity,
-        Double unitPrice,
-        ProductOutputDto product
-) { }
+@Getter
+@Setter
+@Builder
+public class OrderItemInputDto{
+    private Integer quantity;
+    private Double unitPrice;
+    private Long idProduct;
+}

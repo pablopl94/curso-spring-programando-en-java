@@ -16,14 +16,20 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     @EqualsAndHashCode.Include
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @EqualsAndHashCode.Include
     @Column(name = "name", nullable = false)
     private String name;
 
+    @EqualsAndHashCode.Include
     @Column(name = "price", nullable = false)
-    private double price;
+    private Double price;
+
+    @EqualsAndHashCode.Include
+    @Column(name = "stock", nullable = false)
+    private Integer stock;
 
 }

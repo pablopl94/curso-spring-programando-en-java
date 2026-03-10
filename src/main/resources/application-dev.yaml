@@ -27,6 +27,10 @@ spring:
           expiration: 86400000
           refresh-token-expiration: 604800000
 
+app:
+  jwt:
+    issuer-url: https://programandoenjava.com
+
 # Puerto
 server:
   port: 8081

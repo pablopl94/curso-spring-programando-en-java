@@ -27,11 +27,8 @@ public abstract class OrderItemMapper implements GenericMapper<OrderItem, OrderI
 
     @Override
     @Mapping(target = "order", ignore = true)
-    public abstract OrderItem inputToEntity(OrderItemInputDto input);
-
-    @Override
     @Mapping(source = "idProduct", target = "product", qualifiedByName = "mapProduct")
-    public abstract OrderItemInputDto requestToInputDto(OrderItemRequestDto request);
+    public abstract OrderItem inputToEntity(OrderItemInputDto input);
 
     @Named("mapProduct")
     protected ProductOutputDto mapProduct(Long idProduct) {

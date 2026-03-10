@@ -67,5 +67,11 @@ public class ExceptionControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse("ROLE_NOT_FOUND", ex.getMessage()));
     }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("VALIDATION_ERROR", ex.getMessage()));
+    }
 }
 

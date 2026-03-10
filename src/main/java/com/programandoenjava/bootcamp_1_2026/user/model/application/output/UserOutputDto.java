@@ -1,15 +1,22 @@
 package com.programandoenjava.bootcamp_1_2026.user.model.application.output;
 
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-public record UserOutputDto(
-        Long id,
-        String firstname,
-        String lastname,
-        String email,
-        String password,
-        RoleOutputDto role,
-        List<OrderOutputDto> orders
-) { }
+@Getter
+@Setter
+@Builder
+public class UserOutputDto {
+
+    private Long id;
+    private String name;
+    private String email;
+    private String password;
+    private RoleOutputDto role;
+    private List<OrderOutputDto> orders;
+
+}

@@ -2,7 +2,7 @@ package com.programandoenjava.bootcamp_1_2026.order.mapper;
 
 import com.programandoenjava.bootcamp_1_2026.common.mapper.GenericMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.OrderRequestDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderDetailResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.input.OrderInputDto;
@@ -18,10 +18,10 @@ import org.mapstruct.ReportingPolicy;
 
 
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class}, unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, OrderResponseDto, OrderInputDto, OrderOutputDto> {
+public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, OrderDetailResponseDto, OrderInputDto, OrderOutputDto> {
 
     // OUTPUT SUMMARY → SUMMARY RESPONSE
-    OrderSummaryResponseDto outputSummaryToSummaryResponseDto(OrderOutputDto output);
+    OrderSummaryResponseDto outputToSummaryResponseDto(OrderOutputDto output);
 
     // PROJECTION → OUTPUT SUMMARY
     @Mapping(target = "customerName", ignore = true)
@@ -36,6 +36,9 @@ public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, Order
     }
 
     // VIEW → OUTPUT VIEW
-    OrderViewResponseDto viewToViewResponseDto(OrderDashboardView view);
+    OrderOutputDto viewToOutputDto(OrderDashboardView view);
+
+    // OUTPUT VIEW  →  RESPONSE VIEW
+    OrderViewResponseDto outPutToViewResponseDto(OrderOutputDto view);
 
 }

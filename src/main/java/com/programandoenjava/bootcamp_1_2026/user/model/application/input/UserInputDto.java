@@ -1,10 +1,18 @@
 package com.programandoenjava.bootcamp_1_2026.user.model.application.input;
 
-public record UserInputDto(
-        Long id,
-        String firstname,
-        String lastname,
-        String email,
-        String password,
-        Long idRole
-) { }
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+public class UserInputDto {
+
+    private Long id;
+    private String name;
+    private String email;
+    private String password;
+    private Long idRole;
+
+}

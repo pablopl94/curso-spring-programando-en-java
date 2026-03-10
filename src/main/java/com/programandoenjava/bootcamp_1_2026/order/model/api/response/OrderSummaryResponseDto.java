@@ -2,9 +2,10 @@ package com.programandoenjava.bootcamp_1_2026.order.model.api.response;
 
 import java.time.LocalDateTime;
 
-public record OrderSummaryResponseDto(
-        Long id,
-        Double totalAmount,
-        LocalDateTime createdAt,
-        String processor
-) { }
+public class OrderSummaryResponseDto implements OrderResponseDto{
+    Long id;
+    Double totalAmount;
+    String customerEmail;
+    String processorName;
+    LocalDateTime createdAt;
+}
