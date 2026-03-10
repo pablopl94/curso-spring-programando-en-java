@@ -1,5 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.payment.service;
 
+import com.programandoenjava.bootcamp_1_2026.common.exceptions.ValidationException;
 import com.programandoenjava.bootcamp_1_2026.order.service.OrderService;
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
@@ -26,7 +27,7 @@ public class PaymentService {
     @Value("app.payment-provider")
     private String PAYMENT_PROVIDER;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE,  rollbackFor = {PaymentException.class, ValidationException.class})
     public PaymentOutputDto processPayment(PaymentInputDto paymentInput, String username) {
         //Validamos que los productos tengan suficiente stock y que no haya cambiado su precio
         //En esta clase están los methods del repo con @Lock
