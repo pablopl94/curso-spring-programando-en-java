@@ -27,7 +27,7 @@ public class PaymentService {
     @Value("app.payment-provider")
     private String PAYMENT_PROVIDER;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE,  rollbackFor = {PaymentException.class, ValidationException.class})
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public PaymentOutputDto processPayment(PaymentInputDto paymentInput, String username) {
         //Validamos que los productos tengan suficiente stock y que no haya cambiado su precio
         //En esta clase están los methods del repo con @Lock
@@ -40,10 +40,6 @@ public class PaymentService {
         orderService.createOrder(paymentInput,user);
 
         //Procesamos el pedido en el proveedor de pago activo
-        try {
-           return  paymentProcessor.process(paymentInput);
-        } catch (Exception e) {
-            throw new PaymentException("Fallo en el procesamiento");
-        }
+        return  paymentProcessor.process(paymentInput);
     }
 }
