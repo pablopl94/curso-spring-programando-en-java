@@ -19,7 +19,7 @@ import java.util.Date;
 public class JwtService {
 
     private final String secretKey;
-    private final long expiration;
+    private final Long expiration;
     private final String issuerUrl;
 
     public JwtService(
