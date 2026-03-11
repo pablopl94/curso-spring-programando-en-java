@@ -27,7 +27,6 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final OrderMapper mapper;
-    private final OrderRepository orderRepository;
 
     public List<OrderResponseDto> processView(String view){
         // Usa proyecciones para traer solo algunos campos
@@ -109,7 +108,7 @@ public class OrderService {
                 .build();
 
         Order newOrder = mapper.inputToEntity(newOrderInput);
-        orderRepository.save(newOrder);
+        repository.save(newOrder);
         return mapper.entityToOutputDto(newOrder);
     }
 
