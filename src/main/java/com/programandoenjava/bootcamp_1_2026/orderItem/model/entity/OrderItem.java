@@ -17,13 +17,15 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     @EqualsAndHashCode.Include
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @EqualsAndHashCode.Include
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @EqualsAndHashCode.Include
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
 

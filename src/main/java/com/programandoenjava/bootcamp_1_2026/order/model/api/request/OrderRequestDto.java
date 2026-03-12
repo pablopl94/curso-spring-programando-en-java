@@ -5,7 +5,5 @@ import com.programandoenjava.bootcamp_1_2026.orderItem.model.api.OrderItemReques
 import java.util.Set;
 
 public record OrderRequestDto(
-        String customerName,
-        String customerEmail,
         Set<OrderItemRequestDto> items
 ) {}

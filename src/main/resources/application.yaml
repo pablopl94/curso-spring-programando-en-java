@@ -3,6 +3,7 @@ spring:
     name: bootcamp-1-2026
   profiles:
     active: dev # Si se ejecuta por comandos, se ignora por jerarquía
+
   # Configuración JPA común
   jpa:
     hibernate:

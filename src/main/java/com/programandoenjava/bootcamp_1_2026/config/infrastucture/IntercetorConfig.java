@@ -1,4 +1,4 @@
-package com.programandoenjava.bootcamp_1_2026.config;
+package com.programandoenjava.bootcamp_1_2026.config.infrastucture;
 
 import com.programandoenjava.bootcamp_1_2026.common.interceptors.PerformanceInterceptor;
 import org.springframework.context.annotation.Configuration;

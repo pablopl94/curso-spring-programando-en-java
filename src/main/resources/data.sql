@@ -1,24 +1,24 @@
 -- PRODUCTOS (ids del 1 al 20)
-INSERT INTO product (name, price) VALUES ('Teclado', 29.99);
-INSERT INTO product (name, price) VALUES ('Ratón', 15.5);
-INSERT INTO product (name, price) VALUES ('Monitor', 199.99);
-INSERT INTO product (name, price) VALUES ('Auriculares', 49.99);
-INSERT INTO product (name, price) VALUES ('Webcam', 89.99);
-INSERT INTO product (name, price) VALUES ('Silla Gaming', 299.99);
-INSERT INTO product (name, price) VALUES ('Alfombrilla', 12.99);
-INSERT INTO product (name, price) VALUES ('Hub USB', 24.99);
-INSERT INTO product (name, price) VALUES ('Micrófono', 79.99);
-INSERT INTO product (name, price) VALUES ('Cámara Web', 59.99);
-INSERT INTO product (name, price) VALUES ('Disco SSD', 149.99);
-INSERT INTO product (name, price) VALUES ('Memoria RAM', 89.99);
-INSERT INTO product (name, price) VALUES ('Tarjeta Gráfica', 599.99);
-INSERT INTO product (name, price) VALUES ('Procesador', 399.99);
-INSERT INTO product (name, price) VALUES ('Placa Base', 249.99);
-INSERT INTO product (name, price) VALUES ('Fuente Alimentación', 99.99);
-INSERT INTO product (name, price) VALUES ('Caja PC', 129.99);
-INSERT INTO product (name, price) VALUES ('Refrigeración', 49.99);
-INSERT INTO product (name, price) VALUES ('Pasta Térmica', 9.99);
-INSERT INTO product (name, price) VALUES ('Cable HDMI', 14.99);
+INSERT INTO product (name, price, stock) VALUES ('Teclado', 29.99, 50);
+INSERT INTO product (name, price, stock) VALUES ('Ratón', 15.5, 75);
+INSERT INTO product (name, price, stock) VALUES ('Monitor', 199.99, 20);
+INSERT INTO product (name, price, stock) VALUES ('Auriculares', 49.99, 40);
+INSERT INTO product (name, price, stock) VALUES ('Webcam', 89.99, 30);
+INSERT INTO product (name, price, stock) VALUES ('Silla Gaming', 299.99, 15);
+INSERT INTO product (name, price, stock) VALUES ('Alfombrilla', 12.99, 100);
+INSERT INTO product (name, price, stock) VALUES ('Hub USB', 24.99, 60);
+INSERT INTO product (name, price, stock) VALUES ('Micrófono', 79.99, 25);
+INSERT INTO product (name, price, stock) VALUES ('Cámara Web', 59.99, 35);
+INSERT INTO product (name, price, stock) VALUES ('Disco SSD', 149.99, 45);
+INSERT INTO product (name, price, stock) VALUES ('Memoria RAM', 89.99, 50);
+INSERT INTO product (name, price, stock) VALUES ('Tarjeta Gráfica', 599.99, 10);
+INSERT INTO product (name, price, stock) VALUES ('Procesador', 399.99, 12);
+INSERT INTO product (name, price, stock) VALUES ('Placa Base', 249.99, 18);
+INSERT INTO product (name, price, stock) VALUES ('Fuente Alimentación', 99.99, 30);
+INSERT INTO product (name, price, stock) VALUES ('Caja PC', 129.99, 22);
+INSERT INTO product (name, price, stock) VALUES ('Refrigeración', 49.99, 40);
+INSERT INTO product (name, price, stock) VALUES ('Pasta Térmica', 9.99, 200);
+INSERT INTO product (name, price, stock) VALUES ('Cable HDMI', 14.99, 150);
 
 -- ÓRDENES (ids del 1 al 20)
 INSERT INTO orders (total_amount, processor_name, customer_name, customer_email, created_at) VALUES (258.47, 'Stripe', 'Carlos García', 'carlos@gmail.com', '2026-01-05');
@@ -137,3 +137,6 @@ INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 5, 3, 89.99);
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 2, 1, 15.5);
 INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES (20, 11, 1, 149.99);
+
+INSERT INTO roles (id, name) VALUES (1, 'USER');
+INSERT INTO roles (id, name) VALUES (2, 'ADMIN');

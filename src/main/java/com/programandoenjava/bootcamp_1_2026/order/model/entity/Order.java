@@ -21,22 +21,27 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     @EqualsAndHashCode.Include
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @EqualsAndHashCode.Include
     @Column(name = "total_amount",nullable = false)
     private Double totalAmount;
 
+    @EqualsAndHashCode.Include
     @Column(name = "processor_name", nullable = false, length = 50)
     private String processorName;
 
+    @EqualsAndHashCode.Include
     @Column(name = "customer_name", nullable = false, length = 100)
     private String customerName;
 
+    @EqualsAndHashCode.Include
     @Column(name = "customer_email", nullable = false, length = 100)
     private String customerEmail;
 
+    @EqualsAndHashCode.Include
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -44,4 +49,6 @@ public class Order {
     @BatchSize(size = 20)
     private Set<OrderItem> items = new LinkedHashSet<>();
 
+    @Version
+    private Integer version;
 }

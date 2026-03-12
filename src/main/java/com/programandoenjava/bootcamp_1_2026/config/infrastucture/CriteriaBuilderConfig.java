@@ -1,4 +1,4 @@
-package com.programandoenjava.bootcamp_1_2026.config;
+package com.programandoenjava.bootcamp_1_2026.config.infrastucture;
 
 import com.blazebit.persistence.Criteria;
 import com.blazebit.persistence.CriteriaBuilderFactory;
@@ -6,24 +6,12 @@ import com.blazebit.persistence.view.EntityViewManager;
 import com.blazebit.persistence.view.EntityViews;
 import com.blazebit.persistence.view.spi.EntityViewConfiguration;
 import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
-import com.programandoenjava.bootcamp_1_2026.payment.processor.PaymentProcessor;
-import com.programandoenjava.bootcamp_1_2026.payment.processor.MockProcessor;
 import jakarta.persistence.EntityManagerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfig {
-
-    // Este method define un bean de tipo PaymentProcessor que Spring puede inyectar
-    // @ConditionalOnMissingBean indica que este bean solo se crea si NO hay otro PaymentProcessor registrado
-    // Esto asegura que si no se activa un perfil específico, siempre haya una implementación disponible
-    @Bean
-    @ConditionalOnMissingBean(PaymentProcessor.class)
-    public PaymentProcessor getPaymentProcessorDefault() {
-        return new MockProcessor();
-    }
+public class CriteriaBuilderConfig {
 
     @Bean
     public CriteriaBuilderFactory criteriaBuilderFactory(EntityManagerFactory emf){

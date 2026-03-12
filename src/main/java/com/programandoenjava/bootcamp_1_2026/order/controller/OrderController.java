@@ -2,15 +2,15 @@ package com.programandoenjava.bootcamp_1_2026.order.controller;
 
 import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderDetailResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderSummaryOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderViewOutputDto;
 import com.programandoenjava.bootcamp_1_2026.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,41 +26,17 @@ public class OrderController {
         this.mapper = mapper;
     }
 
-
     @GetMapping()
-    public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String view) {
-
-        // Usa proyecciones para traer solo algunos campos
-        if (view != null && view.equals("summary")) {
-            List<OrderSummaryOutputDto> outputService = service.getSummary();
-            List<OrderSummaryResponseDto> response = outputService.stream()
-                    .map(this.mapper::outputSummaryToSummaryResponseDto)
-                    .toList();
-            return ResponseEntity.ok().body(response);
-        }
-
-        // Usa Blaze EntityViews con agregaciones
-        if (view != null && view.equals("dashboard")) {
-            List<OrderViewOutputDto> outputService = service.getDashboardView();
-            List<OrderViewResponseDto> response = outputService.stream()
-                    .map(this.mapper::outputViewToViewResponseDto)
-                    .toList();
-            return ResponseEntity.ok().body(response);
-        }
-
-        // Obtiene todas las orders usando @EntityGraph
-        List<OrderOutputDto> outputService = service.getAll();
-        List<OrderResponseDto> response = outputService.stream()
-                .map(this.mapper::outputToResponseDto)
-                .toList();
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<List<OrderResponseDto>> getAll(@RequestParam(required = false) String view) {
+        List<OrderResponseDto> responseViewList = service.processView(view);
+        return ResponseEntity.ok().body(responseViewList);
     }
 
     // Filtros con CriteriaBuilder para probar búsquedas avanzadas
     @GetMapping("/search")
-    public ResponseEntity<List<OrderResponseDto>> search(RequestOrderFilter filter) {
+    public ResponseEntity<List<OrderDetailResponseDto>> search(RequestOrderFilter filter) {
         List<OrderOutputDto> outputService = service.searchWithFilters(filter);
-        List<OrderResponseDto> response = outputService.stream()
+        List<OrderDetailResponseDto> response = outputService.stream()
                 .map(this.mapper::outputToResponseDto)
                 .toList();
         return ResponseEntity.ok().body(response);

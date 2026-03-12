@@ -21,6 +21,15 @@ spring:
 server:
   port: 8081
 
+# Configuración JWT
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION} # 1 día en ms
+      refresh-token:
+        expiration: ${JWT_REFRESH_EXPIRATION} # 7 días en ms
+
 # Aquí defino las propiedades de la aplicación, app es una convención
 # podría ser feature o cualquier cosa
 app:

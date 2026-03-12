@@ -1,39 +1,126 @@
 package com.programandoenjava.bootcamp_1_2026.order.service;
 
+import com.programandoenjava.bootcamp_1_2026.order.exception.OrderServiceException;
+import com.programandoenjava.bootcamp_1_2026.order.mapper.OrderMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.RequestOrderFilter;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.application.input.OrderInputDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderSummaryOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderViewOutputDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
+import com.programandoenjava.bootcamp_1_2026.order.repository.OrderRepository;
+import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
+import com.programandoenjava.bootcamp_1_2026.order.repository.projection.OrderSummary;
+import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemInputDto;
+import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
+import com.programandoenjava.bootcamp_1_2026.user.model.application.output.UserOutputDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final OrderCrudService crudService;
-    private final OrderFilterService filterService;
-    private final OrderViewService viewService;
+    private final OrderRepository repository;
+    private final OrderMapper mapper;
 
-    //Delega a crudService
+    public List<OrderResponseDto> processView(String view){
+        // Usa proyecciones para traer solo algunos campos
+        if (view != null && view.equals("summary")) {
+            return getSummary().stream()
+                    .map(this.mapper::outputToSummaryResponseDto)
+                    .collect(Collectors.toList());
+        }
+        // Usa Blaze EntityViews con agregaciones
+        if (view != null && view.equals("dashboard")) {
+            return getDashboardView().stream()
+                    .map(this.mapper::outPutToViewResponseDto)
+                    .map(OrderSummaryResponseDto.class::cast)
+                    .collect(Collectors.toList());
+        }
+        // Obtiene todas las orders usando @EntityGraph
+         return getAll().stream()
+                 .map(this.mapper::outputToResponseDto)
+                 .collect(Collectors.toList());
+    }
+
     public List<OrderOutputDto> getAll() {
-        return crudService.getAll();
+        try {
+            List<Order> orderList = repository.findAll();
+            return orderList.stream()
+                    .map(this.mapper::entityToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getAll", "No se ha podido obtener la lista de pedidos");
+        }
     }
 
-    //Delega a filterService
     public List<OrderOutputDto> searchWithFilters(RequestOrderFilter filter) {
-        return filterService.searchWithFilters(filter);
+        try {
+            List<Order> orderList = repository
+                    .findOrderByFilters(
+                            filter.createdAtFrom(),
+                            filter.createdAtTo(),
+                            filter.totalAmountMin(),
+                            filter.totalAmountMax(),
+                            filter.productName());
+            return orderList.stream()
+                    .map(this.mapper::entityToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.searchWithFilters", "No se ha podido obtener el listado de pedidos");
+        }
     }
 
-    //Delega a viewService
-    public List<OrderSummaryOutputDto> getSummary() {
-        return viewService.getSummary();
+    public List<OrderOutputDto> getSummary() {
+        try {
+            List<OrderSummary> orderList = repository.findOrderSummaryBy();
+            return orderList.stream()
+                    .map(this.mapper::projectionToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getSummary", "No se ha podido obtener el sumario de pedidos");
+        }
     }
 
-    public List<OrderViewOutputDto> getDashboardView() {
-        return viewService.getDashboardView();
+    public List<OrderOutputDto> getDashboardView() {
+        try {
+            List<OrderDashboardView> orderList = repository.findAllDashboard();
+            return orderList.stream()
+                    .map(this.mapper::viewToOutputDto)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            throw new OrderServiceException("OrderService.Order.getDashboardView", "No se ha podido obtener el listado del dashboard view");
+        }
     }
 
-}
+    public OrderOutputDto createOrder(PaymentInputDto payment, UserOutputDto user){
+        OrderInputDto newOrderInput = OrderInputDto.builder()
+                .customerEmail(user.getEmail())
+                .processorName(user.getName())
+                .processorName(payment.getPaymentProvider())
+                .items(payment.getItems())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Order newOrder = mapper.inputToEntity(newOrderInput);
+        repository.save(newOrder);
+        return mapper.entityToOutputDto(newOrder);
+    }
+
+
+    public static double calculateTotalPrice(Set<OrderItemInputDto> listaItems){
+        double precioTotal = 0;
+        //Calcular el precioTotal usando el precio real del producto desde BD
+        for(OrderItemInputDto item: listaItems){
+            precioTotal = precioTotal + ((item.getQuantity()) * (item.getUnitPrice()));
+        }
+        // Redondear a 2 decimales
+        return  precioTotal = Math.round(precioTotal * 100.0) / 100.0;
+    }}

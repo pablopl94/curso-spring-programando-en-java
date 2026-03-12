@@ -17,6 +17,20 @@ spring:
         generate_statistics: true
         format_sql: true
 
+  # Configuración JWT para OAuth2 Resource Server
+  # secret-key la usará Spring automáticamente para validar los tokens
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: 7e40f4ca906d42b63d599c1bf7c0d5cc43f9e7923f7ef25663740f6061a2482a
+          expiration: 86400000
+          refresh-token-expiration: 604800000
+
+app:
+  jwt:
+    issuer-url: https://programandoenjava.com
+
 # Puerto
 server:
   port: 8081

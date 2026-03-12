@@ -2,53 +2,43 @@ package com.programandoenjava.bootcamp_1_2026.order.mapper;
 
 import com.programandoenjava.bootcamp_1_2026.common.mapper.GenericMapper;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.request.OrderRequestDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderDetailResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderSummaryResponseDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderViewResponseDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.application.input.OrderInputDto;
+import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
 import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
 import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
 import com.programandoenjava.bootcamp_1_2026.order.repository.projection.OrderSummary;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.input.OrderInputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderSummaryOutputDto;
-import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderViewOutputDto;
-import com.programandoenjava.bootcamp_1_2026.product.mapper.ProductMapper;
+import com.programandoenjava.bootcamp_1_2026.orderItem.mapper.OrderItemMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", uses = {ProductMapper.class})
-public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, OrderResponseDto, OrderInputDto, OrderOutputDto> {
 
-    // REQUEST → INPUT
-    @Override
-    OrderInputDto requestToInputDto(OrderRequestDto request);
-
-    // INPUT → ENTITY
-    @Override
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "totalAmount", ignore = true)
-    @Mapping(target = "processorName", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    Order inputToEntity(OrderInputDto input);
-
-    // ENTITY → OUTPUT
-    @Override
-    OrderOutputDto entityToOutputDto(Order entity);
-
-    // OUTPUT → RESPONSE
-    @Override
-    OrderResponseDto outputToResponseDto(OrderOutputDto output);
+@Mapper(componentModel = "spring", uses = {OrderItemMapper.class}, unmappedSourcePolicy = ReportingPolicy.IGNORE)
+public interface OrderMapper extends GenericMapper<Order, OrderRequestDto, OrderDetailResponseDto, OrderInputDto, OrderOutputDto> {
 
     // OUTPUT SUMMARY → SUMMARY RESPONSE
-    OrderSummaryResponseDto outputSummaryToSummaryResponseDto(OrderSummaryOutputDto output);
+    OrderSummaryResponseDto outputToSummaryResponseDto(OrderOutputDto output);
 
     // PROJECTION → OUTPUT SUMMARY
-    OrderSummaryOutputDto projectionToOutputSummaryDto(OrderSummary projection);
+    @Mapping(target = "customerName", ignore = true)
+    @Mapping(target = "customerEmail", ignore = true)
+    @Mapping(target = "items", ignore = true)
+    @Mapping(target = "processorName", qualifiedByName = "mapProcessorName")
+    OrderOutputDto projectionToOutputDto(OrderSummary projection);
 
-    // OUTPUT VIEW → VIEW RESPONSE
-    OrderViewResponseDto outputViewToViewResponseDto(OrderViewOutputDto output);
+    @Named("mapProcessorName")
+    default String mapProcessorName(String processorName) {
+        return "Pago procesado por: " + processorName;
+    }
 
-    // VIEW → OUTPUT VIRE
-    OrderViewOutputDto viewToOutputViewDto(OrderDashboardView view);
+    // VIEW → OUTPUT VIEW
+    OrderOutputDto viewToOutputDto(OrderDashboardView view);
+
+    // OUTPUT VIEW  →  RESPONSE VIEW
+    OrderViewResponseDto outPutToViewResponseDto(OrderOutputDto view);
 
 }
