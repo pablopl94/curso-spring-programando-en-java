@@ -1,9 +1,7 @@
 package com.programandoenjava.bootcamp_1_2026.order.model.application.output;
 
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -11,6 +9,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderOutputDto {
     private Long id;
     private Double totalAmount;

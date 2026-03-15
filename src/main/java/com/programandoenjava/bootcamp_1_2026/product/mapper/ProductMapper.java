@@ -12,7 +12,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ProductMapper extends GenericMapper<Product, ProductRequestDto, ProductResponseDto, ProductInputDto, ProductOutputDto> {
 
-    // OUTPUT → ENTITY
     Product outputToEntity(ProductOutputDto output);
 
 }

@@ -1,8 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.payment.service;
 
-import com.programandoenjava.bootcamp_1_2026.common.exceptions.ValidationException;
 import com.programandoenjava.bootcamp_1_2026.order.service.OrderService;
-import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentOutputDto;
 import com.programandoenjava.bootcamp_1_2026.payment.processor.PaymentProcessor;
@@ -37,9 +35,9 @@ public class PaymentService {
         //Buscamos al usuario con el email
         UserOutputDto user = usuarioService.getUserByEmail(username);
         //Creamos la orden a partir el usuario y el request
-        orderService.createOrder(paymentInput,user);
+        orderService.createOrder(paymentInput, user);
 
         //Procesamos el pedido en el proveedor de pago activo
-        return  paymentProcessor.process(paymentInput);
+        return paymentProcessor.process(paymentInput);
     }
 }

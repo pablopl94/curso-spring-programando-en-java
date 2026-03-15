@@ -1,7 +1,8 @@
 package com.programandoenjava.bootcamp_1_2026.config.infrastucture;
 
-import com.programandoenjava.bootcamp_1_2026.payment.processor.PaymentProcessor;
+import com.programandoenjava.bootcamp_1_2026.payment.mapper.PaymentMapper;
 import com.programandoenjava.bootcamp_1_2026.payment.processor.MockProcessor;
+import com.programandoenjava.bootcamp_1_2026.payment.processor.PaymentProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +15,8 @@ public class ApplicationConfig {
     // Esto asegura que si no se activa un perfil específico, siempre haya una implementación disponible
     @Bean
     @ConditionalOnMissingBean(PaymentProcessor.class)
-    public PaymentProcessor getPaymentProcessorDefault() {
-        return new MockProcessor();
+    public PaymentProcessor getPaymentProcessorDefault(PaymentMapper mapper) {
+        return new MockProcessor(mapper);
     }
 
 }

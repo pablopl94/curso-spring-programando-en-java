@@ -9,7 +9,10 @@ import com.programandoenjava.bootcamp_1_2026.order.service.CheckoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,9 +26,9 @@ public class CheckoutController {
     @PostMapping()
     public ResponseEntity<CheckoutResponseDto> checkout(@RequestBody CheckoutRequestDto request, Authentication authentication) {
         String username = authentication.getName();
-        CheckoutInputDto checkoutInput = mapper.requestToInputDto(request);
+        CheckoutInputDto checkoutInput = mapper.requestToInput(request);
         CheckoutOutputDto checkoutOutput = service.calculateCheckout(checkoutInput, username);
-        CheckoutResponseDto response= mapper.outputToResponseDto(checkoutOutput);
+        CheckoutResponseDto response = mapper.outputToResponse(checkoutOutput);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -19,12 +19,11 @@ public class PaymentValidator implements GenericValidator<PaymentInputDto> {
     public void validateInsert(PaymentInputDto dto) {
         validateStockAvailability(dto);
         validateProductPrices(dto);
+        validateTotalAmount(dto);
     }
 
     @Override
     public void validateUpdate(PaymentInputDto dto) {
-        validateStockAvailability(dto);
-        validateProductPrices(dto);
     }
 
     @Override
@@ -57,4 +56,11 @@ public class PaymentValidator implements GenericValidator<PaymentInputDto> {
                     throw new ValidationException("El precio del producto ha cambiado");
                 });
     }
+
+    private void validateTotalAmount(PaymentInputDto dto) {
+        if (dto.getTotalAmount() <= 0) {
+            throw new ValidationException("El precio total no puede ser negativo o cero");
+        }
+    }
+
 }
