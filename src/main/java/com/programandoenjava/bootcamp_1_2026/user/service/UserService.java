@@ -20,22 +20,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RolService rolService;
 
-    public UserOutputDto getUserByEmail(String email){
-
+    public UserOutputDto getUserByEmail(String email) {
         //Obtiene el usuario
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-
         //Devolvemos el usuario con el dto del servicio
         return userMapper.entityToOutputDto(user);
     }
 
     public UserOutputDto createUser(UserInputDto userDto) {
-
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Ya existe un usuario con el email: " + userDto.getEmail());
         }
-
         //Creamos el usuario, encriptando la contraseña y le añadimos los params recibidos
         User user = User.builder()
                 .name(userDto.getName())
@@ -43,10 +39,8 @@ public class UserService {
                 .role(rolService.getDefaultRole())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
-
         //Guardamos el usuario
         userRepository.save(user);
-
         //Devolvemos el usuario con el dto del servicio
         return userMapper.entityToOutputDto(user);
     }

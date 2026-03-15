@@ -11,7 +11,6 @@ import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
 import com.programandoenjava.bootcamp_1_2026.order.repository.OrderRepository;
 import com.programandoenjava.bootcamp_1_2026.order.repository.impl.OrderDashboardView;
 import com.programandoenjava.bootcamp_1_2026.order.repository.projection.OrderSummary;
-import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemInputDto;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
 import com.programandoenjava.bootcamp_1_2026.user.model.application.output.UserOutputDto;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +28,7 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderMapper mapper;
 
-    public List<OrderResponseDto> processView(String view){
+    public List<OrderResponseDto> processView(String view) {
         // Usa proyecciones para traer solo algunos campos
         if (view != null && view.equals("summary")) {
             return getSummary().stream()
@@ -45,9 +43,9 @@ public class OrderService {
                     .collect(Collectors.toList());
         }
         // Obtiene todas las orders usando @EntityGraph
-         return getAll().stream()
-                 .map(this.mapper::outputToResponseDto)
-                 .collect(Collectors.toList());
+        return getAll().stream()
+                .map(this.mapper::outputToResponseDto)
+                .collect(Collectors.toList());
     }
 
     public List<OrderOutputDto> getAll() {
@@ -100,7 +98,7 @@ public class OrderService {
         }
     }
 
-    public OrderOutputDto createOrder(PaymentInputDto payment, UserOutputDto user){
+    public OrderOutputDto createOrder(PaymentInputDto payment, UserOutputDto user) {
         OrderInputDto newOrderInput = OrderInputDto.builder()
                 .customerEmail(user.getEmail())
                 .processorName(user.getName())
@@ -114,13 +112,4 @@ public class OrderService {
         return mapper.entityToOutputDto(newOrder);
     }
 
-
-    public static double calculateTotalPrice(Set<OrderItemInputDto> listaItems){
-        double precioTotal = 0;
-        //Calcular el precioTotal usando el precio real del producto desde BD
-        for(OrderItemInputDto item: listaItems){
-            precioTotal = precioTotal + ((item.getQuantity()) * (item.getUnitPrice()));
-        }
-        // Redondear a 2 decimales
-        return  precioTotal = Math.round(precioTotal * 100.0) / 100.0;
-    }}
+}

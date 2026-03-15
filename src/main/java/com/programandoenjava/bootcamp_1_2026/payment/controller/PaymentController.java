@@ -26,9 +26,9 @@ public class PaymentController {
     @PostMapping()
     public ResponseEntity<PaymentResponseDto> pay(@RequestBody PaymentRequestDto request, Authentication authentication) {
         String username = authentication.getName();
-        PaymentInputDto paymentInput = mapper.requestToInputDto(request);
+        PaymentInputDto paymentInput = mapper.requestToInput(request);
         PaymentOutputDto paymentOutput = service.processPayment(paymentInput, username);
-        PaymentResponseDto response = mapper.outputToResponseDto(paymentOutput);
+        PaymentResponseDto response = mapper.outputToResponse(paymentOutput);
         return ResponseEntity.ok().body(response);
     }
 

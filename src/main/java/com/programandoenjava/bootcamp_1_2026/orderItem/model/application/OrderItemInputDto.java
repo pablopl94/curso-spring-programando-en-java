@@ -1,13 +1,13 @@
 package com.programandoenjava.bootcamp_1_2026.orderItem.model.application;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
-public class OrderItemInputDto{
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderItemInputDto {
     private Integer quantity;
     private Double unitPrice;
     private Long idProduct;

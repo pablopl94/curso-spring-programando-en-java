@@ -1,12 +1,12 @@
 package com.programandoenjava.bootcamp_1_2026.user.model.application.output;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserOutputDto {
     private Long id;
     private String name;
