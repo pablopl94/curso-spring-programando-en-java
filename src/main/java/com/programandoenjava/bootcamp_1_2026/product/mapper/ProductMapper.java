@@ -13,5 +13,5 @@ import org.mapstruct.Mapper;
 public interface ProductMapper extends GenericMapper<Product, ProductRequestDto, ProductResponseDto, ProductInputDto, ProductOutputDto> {
 
     Product outputToEntity(ProductOutputDto output);
-
+    
 }
