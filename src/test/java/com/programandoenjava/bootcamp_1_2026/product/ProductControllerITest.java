@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -31,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 ProductMapperImpl.class
         })
 @EnableSliceConfigTest
-public class ProductControllerITTest extends TestContainerConfig {
+@Transactional
+public class ProductControllerITest extends TestContainerConfig {
 
     @Autowired
     private MockMvc mock;
