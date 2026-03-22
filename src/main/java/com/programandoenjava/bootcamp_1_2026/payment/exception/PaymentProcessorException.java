@@ -9,11 +9,6 @@ public class PaymentProcessorException extends RuntimeException {
         this.code = code;
     }
 
-    public PaymentProcessorException(String code, String message, Throwable cause) {
-        super(message, cause);
-        this.code = code;
-    }
-
     public String getCode() {
         return code;
     }
