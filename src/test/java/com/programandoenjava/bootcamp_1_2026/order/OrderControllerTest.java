@@ -81,12 +81,12 @@ public class OrderControllerTest extends TestContainerConfig {
     @Test
     @DisplayName("debería retornar las órdenes que contienen productos con el nombre buscado")
     void test01_shouldGetOrders_whenSearchByProductName() throws Exception {
-
+        //Arrange
         RequestOrderFilter request = new RequestOrderFilter();
         request.setProductName(product1.getName());
-
         String json = objectMapper.writeValueAsString(request);
 
+        //Act + Asserts
         mock.perform(post(BASE_URL + "/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -98,12 +98,13 @@ public class OrderControllerTest extends TestContainerConfig {
     @Test
     @DisplayName("debería devolver una lista de pedidos que tienen un precio total entre el mínimo y máximo especificado")
     void test02_shouldGetOrders_whenSearchByPriceMinAndMaxExists() throws Exception {
+        //Arrange
         RequestOrderFilter request = new RequestOrderFilter();
         request.setTotalAmountMin(100.0);
         request.setTotalAmountMax(200.0);
-
         String json = objectMapper.writeValueAsString(request);
 
+        //Act + Asserts
         mock.perform(post(BASE_URL + "/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -116,16 +117,18 @@ public class OrderControllerTest extends TestContainerConfig {
     @Test
     @DisplayName("debería devolver una lista vacía si no existen pedidos entre el mínimo y máximo especificado")
     void test03_shouldGetOrders_whenSearchByPriceMinAndMaxNotExists() throws Exception {
+        //Arrange
         RequestOrderFilter request = new RequestOrderFilter();
         request.setTotalAmountMin(5.0);
         request.setTotalAmountMax(9.0);
-
         String json = objectMapper.writeValueAsString(request);
 
+        //Act + Asserts
         mock.perform(post(BASE_URL + "/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
+    g
 }

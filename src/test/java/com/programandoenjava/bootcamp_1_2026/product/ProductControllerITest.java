@@ -67,9 +67,9 @@ public class ProductControllerITest extends TestContainerConfig {
         mock.perform(get(BASE_URL + "/{id}", saved.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Laptop"))
-                .andExpect(jsonPath("$.price").value(999.99))
-                .andExpect(jsonPath("$.stock").value(100));
+                .andExpect(jsonPath("$.name").value(nameProduct))
+                .andExpect(jsonPath("$.price").value(priceProduct))
+                .andExpect(jsonPath("$.stock").value(stockProduct));
     }
 
     @Test
