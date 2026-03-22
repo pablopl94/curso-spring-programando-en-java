@@ -61,16 +61,16 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
             predicates.add(cb.like(productJoin.<String>get(Product_.name), "%" + productName + "%"));
         }
 
+        // Validación menos debe haber UN filtro
+        if(predicates.isEmpty()){
+            throw new IllegalArgumentException("Debe proporcionar al menos un criterio de búsqueda");
+        }
+
         // Uso un fetch ahora, para cargar los datos en la entidad Order, el join solo filtra.
         // Me ha dado problemas usando solo el fetch para filtrar, esta es la única manera que he conseguido
         // de que me funcione correctamente. Sin esto también funciona porque esta el BatchSize en las entidades,
         //pero hace 3 consultas en total y con esto 1. He medido los tiempos y el resultado y he visto esta más eficiente.
         order.fetch(Order_.items, JoinType.LEFT).fetch(OrderItem_.product, JoinType.LEFT);
-
-        // Validación menos debe haber UN filtro
-        if(predicates.isEmpty()){
-            throw new IllegalArgumentException("Debe proporcionar al menos un criterio de búsqueda");
-        }
 
         // Elimino duplicados con distinct que pueden aparecer por los joins
         cq.select(order).distinct(true).where(predicates.toArray(new Predicate[0]));
