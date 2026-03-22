@@ -1,6 +1,6 @@
 package com.programandoenjava.bootcamp_1_2026.order.model.application.output;
 
-import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem;
+import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemOutputDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,5 +18,5 @@ public class OrderOutputDto {
     private String customerName;
     private String customerEmail;
     private LocalDateTime createdAt;
-    private Set<OrderItem> items;
+    private Set<OrderItemOutputDto> items;
 }

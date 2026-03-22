@@ -30,6 +30,9 @@ public abstract class OrderItemMapper implements GenericMapper<OrderItem, OrderI
     @Mapping(source = "idProduct", target = "product", qualifiedByName = "mapProduct")
     public abstract OrderItem inputToEntity(OrderItemInputDto input);
 
+    @Override
+    public abstract OrderItemOutputDto entityToOutputDto(OrderItem entity);
+
     @Named("mapProduct")
     protected ProductOutputDto mapProduct(Long idProduct) {
         if (idProduct == null) return null;
