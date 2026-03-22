@@ -1,5 +1,7 @@
 package com.programandoenjava.bootcamp_1_2026.common.mapper;
 
+import org.mapstruct.MappingTarget;
+
 /**
  * @param <E> Entidad original
  * @param <Q> DTO con parámetros de entrada del controlador
@@ -20,4 +22,6 @@ public interface GenericMapper<E, Q, R, I, O> {
 
     // OUTPUT → RESPONSE
     R outputToResponseDto(O output);
+
+    E updateEntity(@MappingTarget E entity, I input);
 }

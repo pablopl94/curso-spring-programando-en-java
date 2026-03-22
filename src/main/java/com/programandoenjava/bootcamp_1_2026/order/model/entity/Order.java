@@ -26,7 +26,7 @@ public class Order {
     private Long id;
 
     @EqualsAndHashCode.Include
-    @Column(name = "total_amount",nullable = false)
+    @Column(name = "total_amount", nullable = false)
     private Double totalAmount;
 
     @EqualsAndHashCode.Include
@@ -45,7 +45,7 @@ public class Order {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @BatchSize(size = 20)
     private Set<OrderItem> items = new LinkedHashSet<>();
 

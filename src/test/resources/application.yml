@@ -1,0 +1,15 @@
+spring:
+  jackson:
+    use-jackson2-defaults: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: ecommerce
+        hbm2ddl:
+          create_namespaces: true
+    show-sql: true
+
+  flyway:
+    enabled: false

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = ProductController.class, excludeFilters = @ComponentScan.Filter)
 @AutoConfigureMockMvc(addFilters = false)
-public class ProductTest {
+public class ProductServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,4 +47,5 @@ public class ProductTest {
         mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk());
     }
+
 }

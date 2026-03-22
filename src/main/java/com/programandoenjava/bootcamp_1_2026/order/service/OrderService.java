@@ -63,11 +63,11 @@ public class OrderService {
         try {
             List<Order> orderList = repository
                     .findOrderByFilters(
-                            filter.createdAtFrom(),
-                            filter.createdAtTo(),
-                            filter.totalAmountMin(),
-                            filter.totalAmountMax(),
-                            filter.productName());
+                            filter.getCreatedAtFrom(),
+                            filter.getCreatedAtTo(),
+                            filter.getTotalAmountMin(),
+                            filter.getTotalAmountMax(),
+                            filter.getProductName());
             return orderList.stream()
                     .map(this.mapper::entityToOutputDto)
                     .collect(Collectors.toList());
