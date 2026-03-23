@@ -1,6 +1,5 @@
 package com.programandoenjava.bootcamp_1_2026.product;
 
-import com.programandoenjava.bootcamp_1_2026.config.EnableDatabaseTest;
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
 import com.programandoenjava.bootcamp_1_2026.config.infrastucture.CriteriaBuilderConfig;
 import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
@@ -8,18 +7,19 @@ import com.programandoenjava.bootcamp_1_2026.product.repository.ProductRepositor
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {ProductRepository.class, CriteriaBuilderConfig.class})
-@EnableDatabaseTest
-@Transactional
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(CriteriaBuilderConfig.class)
 public class ProductRepositoryTest extends TestContainerConfig {
 
     @Autowired

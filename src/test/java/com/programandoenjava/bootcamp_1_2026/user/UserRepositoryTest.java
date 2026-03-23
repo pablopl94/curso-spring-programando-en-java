@@ -1,6 +1,5 @@
 package com.programandoenjava.bootcamp_1_2026.user;
 
-import com.programandoenjava.bootcamp_1_2026.config.EnableDatabaseTest;
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
 import com.programandoenjava.bootcamp_1_2026.config.infrastucture.CriteriaBuilderConfig;
 import com.programandoenjava.bootcamp_1_2026.user.model.constants.RoleEnum;
@@ -12,18 +11,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {UserRepository.class, RoleRepository.class, CriteriaBuilderConfig.class})
-@EnableDatabaseTest
-@Transactional
+@DataJpaTest
+@Import(CriteriaBuilderConfig.class)
 public class UserRepositoryTest extends TestContainerConfig {
 
     @Autowired

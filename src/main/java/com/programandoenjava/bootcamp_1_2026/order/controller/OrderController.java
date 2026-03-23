@@ -7,7 +7,10 @@ import com.programandoenjava.bootcamp_1_2026.order.model.api.response.OrderRespo
 import com.programandoenjava.bootcamp_1_2026.order.model.application.output.OrderOutputDto;
 import com.programandoenjava.bootcamp_1_2026.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class OrderController {
     }
 
     // Filtros con CriteriaBuilder para probar búsquedas avanzadas
-    @PostMapping("/search")
-    public ResponseEntity<List<OrderDetailResponseDto>> search(@RequestBody RequestOrderFilter filter) {
+    @GetMapping("/search")
+    public ResponseEntity<List<OrderDetailResponseDto>> search(RequestOrderFilter filter) {
         List<OrderOutputDto> outputService = service.searchWithFilters(filter);
         List<OrderDetailResponseDto> response = outputService.stream()
                 .map(this.mapper::outputToResponseDto)

@@ -16,8 +16,6 @@
 
     <properties>
         <java.version>21</java.version>
-        <tomcat.version>11.0.18</tomcat.version>
-        <assertj.version>3.27.7</assertj.version>
     </properties>
 
     <dependencies>
