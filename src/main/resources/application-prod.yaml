@@ -20,23 +20,20 @@ spring:
         generate_statistics: false
         format_sql: false
 
-# Puerto
-server:
-  port: 8081
-
-# Configuración JWT
-application:
+  # Configuración JWT para OAuth2 Resource Server
   security:
-    jwt:
-      secret-key: ${JWT_SECRET}
-      expiration: ${JWT_EXPIRATION} # 1 día en ms
-      refresh-token:
-        expiration: ${JWT_REFRESH_EXPIRATION} # 7 días en ms
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: ${JWT_SECRET}
 
-# Aquí defino las propiedades de la aplicación, app es una convención
-# podría ser feature o cualquier cosa
+# Puerto en prod
+server:
+  port: 443
+
+# Configuración personalizada para modo prod
 app:
-  payment-provider: paypal # Propiedad que indica que servicio se va a usar para los pagos en "prod"
+  payment-provider: ${PAYMENT_PROVIDER}
   stripe-key: ${STRIPE_API_KEY}
   paypal-key: ${PAYPAL_API_KEY}
 

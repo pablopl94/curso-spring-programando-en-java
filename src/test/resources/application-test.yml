@@ -1,0 +1,17 @@
+spring:
+  # Configuración jpa para Tests:
+  # En los test quiero que no use FlyWay para importar los scripts
+  # por eso le decimos que en los test aplique create-drope jpa
+  # también le indicamos el schema que tiene que utilizar y si no existe que lo cree
+  # en este caso vamos a realizar los test con una BD sin datos.
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # crea las tablas al iniciar el test y las borra al finalizar
+    show-sql: true # muestra el SQL en consola para debuguear los tests
+    properties:
+      hibernate:
+        default_schema: ecommerce # schema donde se ejecutarán las pruebas
+        generate_statistics: true # muestra métricas (tiempo y cantidad de queries)
+        format_sql: true # deja el SQL por consola bonito para que sea fácil de leer
+        hbm2ddl:
+          create_namespaces: true # crea automáticamente el schema ecommerce si no existe en la BD de test
