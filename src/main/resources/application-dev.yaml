@@ -1,44 +1,46 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ecommerce_db
-    username: postgres
-    password: admin
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   # Configuración de Flyway
   flyway:
-    enabled: true
-    locations: classpath:db/migration
-    baseline-on-migrate: true
+    enabled: true # Activa el control automático de versiones de la BD con FlyWay en este caso
+    locations: classpath:db/migration # Ruta donde Flyway va a buscar los scripts
+    baseline-on-migrate: true # Permite empezar a usar Flyway en una BD que ya existe
 
   # Configuración JPA específica de dev
   jpa:
-    show-sql: true
+    show-sql: true # Muestra el SQL en consola
     properties:
       hibernate:
-        default_schema: ecommerce
-        generate_statistics: true
-        format_sql: true
+        default_schema: ecommerce # Indica en qué esquema de Postgres trabajar por defecto
+        generate_statistics: true # Muestra métricas (tiempo y cantidad de queries) al final
+        format_sql: true # Deja el SQL por consola bonito para que sea fácil de leer
 
   # Configuración JWT para OAuth2 Resource Server
-  # secret-key la usará Spring automáticamente para validar los tokens
   security:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: 7e40f4ca906d42b63d599c1bf7c0d5cc43f9e7923f7ef25663740f6061a2482a
-          expiration: 86400000
-          refresh-token-expiration: 604800000
+          secret-key: ${JWT_SECRET} # secret-key la usará Spring automáticamente para validar los tokens
 
+# Configuración personalizada para modo dev
 app:
+  payment:
+    provider: mock # Indica la pasarela de pago que vamos a usar, en dev usaremos un mock de la pasarela
   jwt:
-    issuer-url: https://programandoenjava.com
+    issuer-url: https://programandoenjava.com # URL del emisor del token
+    expiration: ${JWT_EXPIRATION} # Tiempo de vida del token (en milisegundos)
+    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION} # Tiempo de vida del refresh token
 
-# Puerto
+# Puerto para dev
 server:
   port: 8081
 
-# Logging en modo DEBUG
+# Logging en modo DEBUG para dev
 logging:
   level:
     com.programandoenjava.bootcamp_1_2026: DEBUG
