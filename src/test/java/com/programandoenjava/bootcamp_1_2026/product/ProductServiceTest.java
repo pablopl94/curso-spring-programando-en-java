@@ -1,10 +1,9 @@
 package com.programandoenjava.bootcamp_1_2026.product;
 
-import com.programandoenjava.bootcamp_1_2026.product.controller.ProductController;
-import com.programandoenjava.bootcamp_1_2026.product.mapper.ProductMapper;
-import com.programandoenjava.bootcamp_1_2026.product.model.api.ProductResponseDto;
-import com.programandoenjava.bootcamp_1_2026.product.model.application.ProductOutputDto;
-import com.programandoenjava.bootcamp_1_2026.product.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.application.dto.out.ProductOutputDto;
+import com.programandoenjava.bootcamp_1_2026.product.application.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.ProductController;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;

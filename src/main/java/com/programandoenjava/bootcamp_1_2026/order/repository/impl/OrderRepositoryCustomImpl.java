@@ -8,7 +8,7 @@ import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order_;
 import com.programandoenjava.bootcamp_1_2026.order.repository.OrderRepositoryCustom;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem;
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.entity.OrderItem_;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product_;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
@@ -40,18 +40,18 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if(createdAtFrom != null) {
+        if (createdAtFrom != null) {
             predicates.add(cb.greaterThanOrEqualTo(order.<LocalDateTime>get(Order_.createdAt), createdAtFrom));
         }
 
-        if(createdAtTo != null) {
+        if (createdAtTo != null) {
             predicates.add(cb.lessThanOrEqualTo(order.<LocalDateTime>get(Order_.createdAt), createdAtTo));
         }
 
-        if(totalAmountMin != null) {
+        if (totalAmountMin != null) {
             predicates.add(cb.greaterThanOrEqualTo(order.<Double>get(Order_.totalAmount), totalAmountMin));
         }
-        if(totalAmountMax != null) {
+        if (totalAmountMax != null) {
             predicates.add(cb.lessThanOrEqualTo(order.<Double>get(Order_.totalAmount), totalAmountMax));
         }
 
@@ -62,7 +62,7 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
         }
 
         // Validación menos debe haber UN filtro
-        if(predicates.isEmpty()){
+        if (predicates.isEmpty()) {
             throw new IllegalArgumentException("Debe proporcionar al menos un criterio de búsqueda");
         }
 

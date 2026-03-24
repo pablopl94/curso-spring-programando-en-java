@@ -1,7 +1,7 @@
 package com.programandoenjava.bootcamp_1_2026.orderItem.model.entity;
 
 import com.programandoenjava.bootcamp_1_2026.order.model.entity.Order;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -5,7 +5,7 @@ import com.programandoenjava.bootcamp_1_2026.order.exception.OrderServiceExcepti
 import com.programandoenjava.bootcamp_1_2026.orderItem.exception.OrderItemNotFoundException;
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentException;
 import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentProcessorException;
-import com.programandoenjava.bootcamp_1_2026.product.exception.ProductNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.product.domain.exception.ProductNotFoundException;
 import com.programandoenjava.bootcamp_1_2026.user.exception.RoleNotFoundException;
 import com.programandoenjava.bootcamp_1_2026.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;

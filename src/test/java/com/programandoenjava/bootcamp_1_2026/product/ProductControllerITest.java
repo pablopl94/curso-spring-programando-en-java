@@ -2,13 +2,12 @@ package com.programandoenjava.bootcamp_1_2026.product;
 
 import com.programandoenjava.bootcamp_1_2026.config.EnableSliceConfigTest;
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
-import com.programandoenjava.bootcamp_1_2026.product.controller.ProductController;
-import com.programandoenjava.bootcamp_1_2026.product.mapper.ProductMapper;
-import com.programandoenjava.bootcamp_1_2026.product.mapper.ProductMapperImpl;
-import com.programandoenjava.bootcamp_1_2026.product.model.api.ProductRequestDto;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
-import com.programandoenjava.bootcamp_1_2026.product.repository.ProductRepository;
-import com.programandoenjava.bootcamp_1_2026.product.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.application.mapper.ProductApplicationMapper;
+import com.programandoenjava.bootcamp_1_2026.product.application.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.ProductController;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,8 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 ProductController.class,
                 ProductService.class,
                 ProductRepository.class,
-                ProductMapper.class,
-                ProductMapperImpl.class
+                ProductApplicationMapper.class
         })
 @EnableSliceConfigTest
 @Transactional
@@ -47,11 +45,7 @@ public class ProductControllerITest extends TestContainerConfig {
     private static final String BASE_URL = "/api/products";
 
     private Product createProduct(String name, Double price, Integer stock) {
-        return Product.builder()
-                .name(name)
-                .price(price)
-                .stock(stock)
-                .build();
+        return new Product(null, name, price, stock);
     }
 
     @Test
@@ -64,7 +58,7 @@ public class ProductControllerITest extends TestContainerConfig {
         Product saved = productRepository.save(createProduct(nameProduct, priceProduct, stockProduct));
 
         //Act + Asserts
-        mock.perform(get(BASE_URL + "/{id}", saved.getId())
+        mock.perform(get(BASE_URL + "/{id}", saved.id())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(nameProduct))
@@ -125,7 +119,7 @@ public class ProductControllerITest extends TestContainerConfig {
         String nameProduct = "Producto1";
         Double priceProduct = 999.00;
         Integer stockProduct = 100;
-        ProductRequestDto request = new ProductRequestDto(nameProduct, priceProduct, stockProduct);
+        ProductRequest request = new ProductRequest(nameProduct, priceProduct, stockProduct);
 
         //Act + Asserts
         mock.perform(post(BASE_URL)

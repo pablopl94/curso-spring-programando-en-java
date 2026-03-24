@@ -4,8 +4,8 @@ import com.programandoenjava.bootcamp_1_2026.common.exceptions.ValidationExcepti
 import com.programandoenjava.bootcamp_1_2026.orderItem.model.application.OrderItemInputDto;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
 import com.programandoenjava.bootcamp_1_2026.payment.validator.PaymentValidator;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
-import com.programandoenjava.bootcamp_1_2026.product.repository.ProductRepository;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

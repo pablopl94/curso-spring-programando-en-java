@@ -2,8 +2,8 @@ package com.programandoenjava.bootcamp_1_2026.product;
 
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
 import com.programandoenjava.bootcamp_1_2026.config.infrastucture.CriteriaBuilderConfig;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
-import com.programandoenjava.bootcamp_1_2026.product.repository.ProductRepository;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +31,7 @@ public class ProductRepositoryTest extends TestContainerConfig {
 
     //Métodos privados para no repetir código
     private Product createProduct(String name, Double price, Integer stock) {
-        return Product.builder()
-                .name(name)
-                .price(price)
-                .stock(stock)
-                .build();
+        return new Product(null, name, price, stock);
     }
 
     @Test

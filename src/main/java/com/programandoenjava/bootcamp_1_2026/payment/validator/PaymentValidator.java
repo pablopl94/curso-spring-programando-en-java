@@ -3,9 +3,9 @@ package com.programandoenjava.bootcamp_1_2026.payment.validator;
 import com.programandoenjava.bootcamp_1_2026.common.exceptions.ValidationException;
 import com.programandoenjava.bootcamp_1_2026.common.validator.GenericValidator;
 import com.programandoenjava.bootcamp_1_2026.payment.model.application.PaymentInputDto;
-import com.programandoenjava.bootcamp_1_2026.product.exception.ProductNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.product.model.entity.Product;
-import com.programandoenjava.bootcamp_1_2026.product.repository.ProductRepository;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.domain.exception.ProductNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
