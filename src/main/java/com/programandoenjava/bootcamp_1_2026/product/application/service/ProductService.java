@@ -1,60 +1,59 @@
 package com.programandoenjava.bootcamp_1_2026.product.application.service;
 
-import com.programandoenjava.bootcamp_1_2026.product.application.dto.in.ProductInput;
-import com.programandoenjava.bootcamp_1_2026.product.application.dto.out.ProductOutput;
-import com.programandoenjava.bootcamp_1_2026.product.application.mapper.ProductApplicationMapper;
 import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import com.programandoenjava.bootcamp_1_2026.product.domain.exception.ProductNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.product.domain.port.in.CreateProductUseCase;
-import com.programandoenjava.bootcamp_1_2026.product.domain.port.in.GetProductUseCase;
-import com.programandoenjava.bootcamp_1_2026.product.domain.port.in.DeleteProductUseCase;
+import com.programandoenjava.bootcamp_1_2026.product.domain.port.in.*;
 import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-public class ProductService implements CreateProductUseCase, GetProductUseCase, DeleteProductUseCase {
+public class ProductService implements CreateProductUseCase, UpdateProductUseCase, GetProductUseCase, GetAllProductsUseCase, DeleteProductUseCase {
 
     private final ProductRepository productRepository;
-    private final ProductApplicationMapper productApplicationMapper;
 
-    public ProductService(ProductRepository productRepository, ProductApplicationMapper productApplicationMapper) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productApplicationMapper = productApplicationMapper;
     }
 
     @Override
-    public List<ProductOutput> getAllProducts() {
-        return productRepository.findAll().stream().map(productApplicationMapper::toOutput).toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     @Override
-    public ProductOutput getProductById(Long id) {
-        Product product = productRepository.findById(id)
+    public Product getOneProduct(Long id) {
+        return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
-        return productApplicationMapper.toOutput(product);
     }
 
     @Override
-    public ProductOutput createProduct(ProductInput input) {
-        Product product = productApplicationMapper.toDomain(input);
-        Product savedProduct = productRepository.save(product);
-        return productApplicationMapper.toOutput(savedProduct);
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
     }
 
+
     @Override
-    public ProductOutput updateProduct(Long id, ProductInput product) {
+    public Product updateProduct(Product product, Long id) {
         Product originalProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
-        Product updateProduct = productApplicationMapper.updateDomain(originalProduct, product);
-        Product savedProduct = productRepository.save(updateProduct);
-        return productApplicationMapper.toOutput(savedProduct);
+        Product newProduct = Product.builder()
+                .id(originalProduct.id())
+                .name(product.name())
+                .stock(product.stock())
+                .price(product.price())
+                .build();
+        return productRepository.save(newProduct);
     }
 
     @Override
     public void deleteProduct(Long id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-        } else {
+        if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException(id);
+        }
+        try {
+            productRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(STR."Error técnico al eliminar el producto con id: \{id}", e);
         }
     }
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface QueryProductRepository extends JpaRepository<ProductEntity, Long> {
+public interface SpringJPAProductRepository extends JpaRepository<ProductEntity, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM ProductEntity p WHERE p.id = :id")

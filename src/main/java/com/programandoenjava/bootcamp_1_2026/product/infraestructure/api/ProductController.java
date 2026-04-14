@@ -1,8 +1,8 @@
 package com.programandoenjava.bootcamp_1_2026.product.infraestructure.api;
 
-import com.programandoenjava.bootcamp_1_2026.product.application.dto.in.ProductInput;
-import com.programandoenjava.bootcamp_1_2026.product.application.dto.out.ProductOutput;
 import com.programandoenjava.bootcamp_1_2026.product.application.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductRequest;
 import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductResponse;
 import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.mapper.ProductApiMapper;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAll() {
-        List<ProductOutput> output = productService.getAllProducts();
-        List<ProductResponse> response = output.stream()
+        List<Product> products = productService.getAllProducts();
+        List<ProductResponse> response = products.stream()
                 .map(productApiMapper::toResponse)
                 .toList();
         return ResponseEntity.ok().body(response);
@@ -35,18 +35,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getOne(@PathVariable Long id) {
-        ProductOutput output = productService.getProductById(id);
-        ProductResponse response = productApiMapper.toResponse(output);
+        Product product = productService.getOneProduct(id);
+        ProductResponse response = productApiMapper.toResponse(product);
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody ProductInput input) {
-        ProductOutput response = productService.createProduct(input);
+    public ResponseEntity<Void> insert(@RequestBody ProductRequest request) {
+        Product product = productApiMapper.toDomain(request);
+        Product newProduct = productService.createProduct(product);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.id())
+                .buildAndExpand(newProduct.id())
                 .toUri();
         return ResponseEntity.created(location).build();
     }
@@ -54,10 +55,10 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
-            @RequestBody ProductInput product) {
-        ProductOutput updateProduct = productService.updateProduct(id, product);
-        ProductResponse response = productApiMapper.toResponse(updateProduct);
-        return ResponseEntity.ok(response);
+            @RequestBody ProductRequest request) {
+        Product product = productApiMapper.toDomain(request);
+        Product savedProduct = productService.updateProduct(product, id);
+        return ResponseEntity.ok(productApiMapper.toResponse(savedProduct));
     }
 
     @DeleteMapping("/{id}")
