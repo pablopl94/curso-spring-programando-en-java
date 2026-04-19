@@ -16,6 +16,7 @@ import lombok.*;
 public class RoleEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @Column(name = "id")
     private Long id;

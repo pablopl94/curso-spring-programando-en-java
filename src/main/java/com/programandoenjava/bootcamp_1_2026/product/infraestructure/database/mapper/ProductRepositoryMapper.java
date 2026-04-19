@@ -5,9 +5,9 @@ import com.programandoenjava.bootcamp_1_2026.product.infraestructure.database.en
 import org.springframework.stereotype.Component;
 
 @Component
-public interface ProductRepositoryMapper {
+public class ProductRepositoryMapper {
 
-    default Product toDomain(ProductEntity productEntity) {
+    public Product toDomain(ProductEntity productEntity) {
         if (productEntity == null) return null;
 
         return new Product(
@@ -18,7 +18,7 @@ public interface ProductRepositoryMapper {
         );
     }
 
-    default ProductEntity toEntity(Product product) {
+    public ProductEntity toEntity(Product product) {
         if (product == null) return null;
 
         return new ProductEntity(

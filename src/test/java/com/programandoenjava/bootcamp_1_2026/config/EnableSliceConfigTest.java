@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @EnableDatabaseTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ImportAutoConfiguration({
         WebMvcAutoConfiguration.class,
         JacksonAutoConfiguration.class,

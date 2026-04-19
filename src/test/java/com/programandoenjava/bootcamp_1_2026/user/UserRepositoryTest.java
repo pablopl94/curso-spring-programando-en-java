@@ -2,18 +2,22 @@ package com.programandoenjava.bootcamp_1_2026.user;
 
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
 import com.programandoenjava.bootcamp_1_2026.config.infrastucture.CriteriaBuilderConfig;
-import com.programandoenjava.bootcamp_1_2026.user.model.constants.RoleEnum;
-import com.programandoenjava.bootcamp_1_2026.user.model.entity.Role;
-import com.programandoenjava.bootcamp_1_2026.user.model.entity.User;
-import com.programandoenjava.bootcamp_1_2026.user.repository.RoleRepository;
-import com.programandoenjava.bootcamp_1_2026.user.repository.UserRepository;
+import com.programandoenjava.bootcamp_1_2026.user.domain.constants.RoleEnum;
+import com.programandoenjava.bootcamp_1_2026.user.domain.entity.Role;
+import com.programandoenjava.bootcamp_1_2026.user.domain.entity.User;
+import com.programandoenjava.bootcamp_1_2026.user.domain.port.out.RoleRepository;
+import com.programandoenjava.bootcamp_1_2026.user.domain.port.out.UserRepository;
+import com.programandoenjava.bootcamp_1_2026.user.infrastucture.database.DBRoleAdapter;
+import com.programandoenjava.bootcamp_1_2026.user.infrastucture.database.DbUserAdapter;
+import com.programandoenjava.bootcamp_1_2026.user.infrastucture.database.mapper.RoleRepositoryMapper;
+import com.programandoenjava.bootcamp_1_2026.user.infrastucture.database.mapper.UserRepositoryMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +25,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(CriteriaBuilderConfig.class)
+@Import({CriteriaBuilderConfig.class, DbUserAdapter.class, DBRoleAdapter.class,
+        UserRepositoryMapper.class, RoleRepositoryMapper.class})
+@ActiveProfiles("test")
 public class UserRepositoryTest extends TestContainerConfig {
 
     @Autowired
@@ -29,9 +35,6 @@ public class UserRepositoryTest extends TestContainerConfig {
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private TestEntityManager entityManager;
 
     private Role role;
 
@@ -46,10 +49,8 @@ public class UserRepositoryTest extends TestContainerConfig {
 
     @BeforeEach
     void setUp() {
-        role = new Role();
-        role.setId(1L);
-        role.setName(RoleEnum.USER);
-        role = roleRepository.save(role);
+        role = roleRepository.findByName(RoleEnum.USER)
+                .orElseGet(() -> roleRepository.save(Role.builder().name(RoleEnum.USER).build()));
     }
 
     @Test
@@ -62,29 +63,28 @@ public class UserRepositoryTest extends TestContainerConfig {
         User saved = userRepository.save(user);
 
         //Asserts
-        assertThat(userRepository.findById(saved.getId())).isPresent();
-        assertThat(saved.getId()).isNotNull();
-        assertThat(saved.getName()).isEqualTo("pablo");
-        assertThat(saved.getEmail()).isEqualTo("pablo@test.com");
-        assertThat(saved.getRole()).isEqualTo(role);
+        assertThat(userRepository.findById(saved.id())).isPresent();
+        assertThat(saved.id()).isNotNull();
+        assertThat(saved.name()).isEqualTo("pablo");
+        assertThat(saved.email()).isEqualTo("pablo@test.com");
+        assertThat(saved.role()).isEqualTo(role);
     }
 
     @Test
     @DisplayName("debería retornar el usuario cuando existe el email")
     void test02_shouldReturnUserWhenEmailExists() {
         //Arrange
-        User user = entityManager.persistAndFlush(
-                createUser("pablo", "pablo@test.com", "1234"));
+        User user = userRepository.save(createUser("pablo", "pablo@test.com", "1234"));
 
         //Act
-        Optional<User> result = userRepository.findByEmail(user.getEmail());
+        Optional<User> result = userRepository.findByEmail(user.email());
 
         //Asserts
         assertThat(result).isPresent()
                 .hasValueSatisfying(u -> {
-                    assertThat(u.getName()).isEqualTo("pablo");
-                    assertThat(u.getEmail()).isEqualTo("pablo@test.com");
-                    assertThat(u.getRole()).isEqualTo(role);
+                    assertThat(u.name()).isEqualTo("pablo");
+                    assertThat(u.email()).isEqualTo("pablo@test.com");
+                    assertThat(u.role()).isEqualTo(role);
                 });
     }
 
@@ -102,18 +102,17 @@ public class UserRepositoryTest extends TestContainerConfig {
     @DisplayName("debería retornar el usuario cuando existe el id")
     void test04_shouldReturnUserWhenIdExists() {
         //Arrange
-        User user = entityManager.persistAndFlush(
-                createUser("pablo", "pablo@test.com", "1234"));
+        User user = userRepository.save(createUser("pablo", "pablo@test.com", "1234"));
 
         //Act
-        Optional<User> result = userRepository.findById(user.getId());
+        Optional<User> result = userRepository.findById(user.id());
 
         //Asserts
         assertThat(result).isPresent()
                 .hasValueSatisfying(u -> {
-                    assertThat(u.getName()).isEqualTo("pablo");
-                    assertThat(u.getEmail()).isEqualTo("pablo@test.com");
-                    assertThat(u.getRole()).isEqualTo(role);
+                    assertThat(u.name()).isEqualTo("pablo");
+                    assertThat(u.email()).isEqualTo("pablo@test.com");
+                    assertThat(u.role()).isEqualTo(role);
                 });
     }
 
@@ -131,8 +130,8 @@ public class UserRepositoryTest extends TestContainerConfig {
     @DisplayName("debería devolver una lista de usuarios")
     void test06_shouldReturnListOfUsers() {
         //Arrange
-        entityManager.persistAndFlush(createUser("pablo", "pablo@test.com", "1234"));
-        entityManager.persistAndFlush(createUser("maria", "maria@test.com", "5678"));
+        userRepository.save(createUser("pablo", "pablo@test.com", "1234"));
+        userRepository.save(createUser("maria", "maria@test.com", "5678"));
 
         //Act
         List<User> users = userRepository.findAll();
@@ -155,16 +154,13 @@ public class UserRepositoryTest extends TestContainerConfig {
     @DisplayName("debería eliminar el usuario")
     void test08_shouldDeleteExistingUser() {
         //Arrange
-        User user = entityManager.persistAndFlush(
-                createUser("pablo", "pablo@test.com", "1234"));
+        User user = userRepository.save(createUser("pablo", "pablo@test.com", "1234"));
 
         //Act
-        userRepository.deleteById(user.getId());
-        entityManager.flush();
-        entityManager.clear();
+        userRepository.deleteById(user.id());
 
         //Asserts
-        Optional<User> deleted = userRepository.findById(user.getId());
+        Optional<User> deleted = userRepository.findById(user.id());
         assertThat(deleted).isEmpty();
     }
 }

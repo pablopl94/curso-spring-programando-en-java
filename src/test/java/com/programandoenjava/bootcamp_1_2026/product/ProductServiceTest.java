@@ -1,14 +1,16 @@
 package com.programandoenjava.bootcamp_1_2026.product;
 
-import com.programandoenjava.bootcamp_1_2026.product.application.dto.out.ProductOutputDto;
 import com.programandoenjava.bootcamp_1_2026.product.application.service.ProductService;
+import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.ProductController;
-import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductResponseDto;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductResponse;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.mapper.ProductApiMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,13 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = ProductController.class, excludeFilters = @ComponentScan.Filter)
 @AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 public class ProductServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ProductMapper mapper;
+    private ProductApiMapper mapper;
 
     @MockitoBean
     private ProductService productService;
@@ -36,11 +39,11 @@ public class ProductServiceTest {
     public void test01_getAllProductSuccessful() throws Exception {
 
         // Arrange
-        ProductOutputDto outputDto = new ProductOutputDto(1L, "Laptop", 999.0, 10);
-        ProductResponseDto responseDto = new ProductResponseDto(1L, "Laptop", 999.0, 10);
+        Product product = new Product(1L, "Laptop", 999.0, 10);
+        ProductResponse response = new ProductResponse(1L, "Laptop", 999.0, 10);
 
-        given(productService.getAll()).willReturn(List.of(outputDto));
-        given(mapper.outputToResponseDto(any(ProductOutputDto.class))).willReturn(responseDto);
+        given(productService.getAllProducts()).willReturn(List.of(product));
+        given(mapper.toResponse(any(Product.class))).willReturn(response);
 
         // Act + Asserts
         mockMvc.perform(get("/api/products"))

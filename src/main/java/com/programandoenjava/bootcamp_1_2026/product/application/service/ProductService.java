@@ -53,7 +53,7 @@ public class ProductService implements CreateProductUseCase, UpdateProductUseCas
         try {
             productRepository.deleteById(id);
         } catch (DataAccessException e) {
-            throw new RuntimeException(STR."Error técnico al eliminar el producto con id: \{id}", e);
+            throw new RuntimeException("Error técnico al eliminar el producto con id: " + id, e);
         }
     }
 

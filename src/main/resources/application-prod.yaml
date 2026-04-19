@@ -26,7 +26,7 @@ spring:
       resourceserver:
         jwt:
           secret-key: ${JWT_SECRET}
-
+          expiration: ${JWT_EXPIRATION} # Tiempo de vida del token (en milisegundos)
 # Puerto en prod
 server:
   port: 443

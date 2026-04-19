@@ -6,9 +6,9 @@ import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.Pro
 import org.springframework.stereotype.Component;
 
 @Component
-public interface ProductApiMapper {
+public class ProductApiMapper {
 
-    default ProductResponse toResponse(Product domain) {
+    public ProductResponse toResponse(Product domain) {
         if (domain == null) return null;
 
         return new ProductResponse(
@@ -19,7 +19,7 @@ public interface ProductApiMapper {
         );
     }
 
-    default Product toDomain(ProductRequest request) {
+    public Product toDomain(ProductRequest request) {
         if (request == null) return null;
 
         return new Product(

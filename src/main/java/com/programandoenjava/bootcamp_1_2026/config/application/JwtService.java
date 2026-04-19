@@ -5,8 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.programandoenjava.bootcamp_1_2026.user.model.application.output.UserOutputDto;
-import com.programandoenjava.bootcamp_1_2026.user.model.entity.User;
+import com.programandoenjava.bootcamp_1_2026.user.domain.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -37,12 +36,12 @@ public class JwtService {
      *
      * @return JWTClaimsSet información del token
      */
-    public JWTClaimsSet createClaims(UserOutputDto user) {
+    public JWTClaimsSet createClaims(User user) {
         return new JWTClaimsSet.Builder()
-                .subject(user.getId().toString()) //Id del usuario
-                .claim("email",user.getEmail()) // Le añadimos el email en los claims
-                .claim("name", user.getName()) // Le añadimos en los claims el rol
-                .claim("role", user.getRole().name()) // Le añadimos en los claims el rol
+                .subject(user.id().toString()) //Id del usuario
+                .claim("email", user.email()) // Le añadimos el email en los claims
+                .claim("name", user.name()) // Le añadimos en los claims el rol
+                .claim("role", user.role().name()) // Le añadimos en los claims el rol
                 .issuer(issuerUrl) //Quien creo el token o donde se creó
                 .issueTime(new Date(System.currentTimeMillis()))// Fecha en la que se creó
                 .expirationTime(new Date(System.currentTimeMillis() + expiration)) //Cuando caduca el token
@@ -52,7 +51,7 @@ public class JwtService {
     /**
      * Crea el token y lo firma
      */
-    public String createToken(UserOutputDto user) throws JOSEException {
+    public String createToken(User user) throws JOSEException {
         // Primero crea los claims con su method creado anteriormente
         final JWTClaimsSet claims = createClaims(user);
         // Crea el objeto del firmante que se encarga de firmar, usando nuestro secretKey
@@ -102,7 +101,7 @@ public class JwtService {
      *
      * @param claimName El claimName es simplemente el nombre del dato que quieres sacar del payload del token,
      *                  cada uno tiene un nombre interno. ("sub","iss", ...)
-     * @param token Token JWT como cadena de texto (header, payload , firma)
+     * @param token     Token JWT como cadena de texto (header, payload , firma)
      * @return El valor del claim como String
      * @throws ParseException Error al parsear el token
      */
@@ -117,7 +116,7 @@ public class JwtService {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         // Extraer el email de los claims
 
-        if(jwt == null) return null;
+        if (jwt == null) return null;
 
         return jwt.getClaimAsString("email");
     }
@@ -127,7 +126,7 @@ public class JwtService {
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         // Extraer el name de los claims
-        if(jwt == null) return null;
+        if (jwt == null) return null;
 
         return jwt.getClaimAsString("name");
     }

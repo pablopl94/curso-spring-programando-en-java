@@ -26,15 +26,14 @@ spring:
       resourceserver:
         jwt:
           secret-key: ${JWT_SECRET} # secret-key la usará Spring automáticamente para validar los tokens
+          expiration: ${JWT_EXPIRATION} # Tiempo de vida del token (en milisegundos)
 
 # Configuración personalizada para modo dev
 app:
-  payment:
-    provider: mock # Indica la pasarela de pago que vamos a usar, en dev usaremos un mock de la pasarela
+  payment-provider: mock # Indica la pasarela de pago que vamos a usar, en dev usaremos un mock de la pasarela
   jwt:
     issuer-url: https://programandoenjava.com # URL del emisor del token
-    expiration: ${JWT_EXPIRATION} # Tiempo de vida del token (en milisegundos)
-    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION} # Tiempo de vida del refresh token
+
 
 # Puerto para dev
 server:

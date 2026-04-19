@@ -2,17 +2,15 @@ package com.programandoenjava.bootcamp_1_2026.product;
 
 import com.programandoenjava.bootcamp_1_2026.config.EnableSliceConfigTest;
 import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
-import com.programandoenjava.bootcamp_1_2026.product.application.mapper.ProductApplicationMapper;
-import com.programandoenjava.bootcamp_1_2026.product.application.service.ProductService;
 import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
-import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.ProductController;
 import com.programandoenjava.bootcamp_1_2026.product.infraestructure.api.dto.ProductRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
@@ -22,14 +20,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(
-        classes = {
-                ProductController.class,
-                ProductService.class,
-                ProductRepository.class,
-                ProductApplicationMapper.class
-        })
+@SpringBootTest
 @EnableSliceConfigTest
+@ActiveProfiles("test")
 @Transactional
 public class ProductControllerITest extends TestContainerConfig {
 

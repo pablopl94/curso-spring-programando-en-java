@@ -1,13 +1,14 @@
 package com.programandoenjava.bootcamp_1_2026.common.exceptions;
 
-import com.programandoenjava.bootcamp_1_2026.order.exception.OrderNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.order.exception.OrderServiceException;
-import com.programandoenjava.bootcamp_1_2026.orderItem.exception.OrderItemNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentException;
-import com.programandoenjava.bootcamp_1_2026.payment.exception.PaymentProcessorException;
+import com.programandoenjava.bootcamp_1_2026.order.domain.exception.OrderNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.orderItem.domain.exception.OrderItemNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.payment.domain.exception.PaymentException;
+import com.programandoenjava.bootcamp_1_2026.payment.domain.exception.PaymentProcessorException;
+import com.programandoenjava.bootcamp_1_2026.payment.domain.exception.PriceChangedException;
+import com.programandoenjava.bootcamp_1_2026.payment.domain.exception.StockInsufficientException;
 import com.programandoenjava.bootcamp_1_2026.product.domain.exception.ProductNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.user.exception.RoleNotFoundException;
-import com.programandoenjava.bootcamp_1_2026.user.exception.UserNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.user.domain.exception.RoleNotFoundException;
+import com.programandoenjava.bootcamp_1_2026.user.domain.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,11 +26,6 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ErrorResponse> handlePaymentException(PaymentException ex) {
         return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED)
                 .body(new ErrorResponse("PAYMENT_ERROR", ex.getMessage()));
-    }
-
-    @ExceptionHandler(OrderServiceException.class)
-    public ResponseEntity<ErrorResponse> handleOrderServiceException(OrderServiceException ex) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
@@ -72,6 +68,18 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("VALIDATION_ERROR", ex.getMessage()));
+    }
+
+    @ExceptionHandler(StockInsufficientException.class)
+    public ResponseEntity<ErrorResponse> handleStockInsufficientException(StockInsufficientException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("STOCK_INSUFFICIENT", ex.getMessage()));
+    }
+
+    @ExceptionHandler(PriceChangedException.class)
+    public ResponseEntity<ErrorResponse> handlePriceChangedException(PriceChangedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("PRICE_CHANGED", ex.getMessage()));
     }
 }
 

@@ -4,13 +4,15 @@ import com.programandoenjava.bootcamp_1_2026.config.TestContainerConfig;
 import com.programandoenjava.bootcamp_1_2026.config.infrastucture.CriteriaBuilderConfig;
 import com.programandoenjava.bootcamp_1_2026.product.domain.entity.Product;
 import com.programandoenjava.bootcamp_1_2026.product.domain.port.out.ProductRepository;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.database.DBProductAdapter;
+import com.programandoenjava.bootcamp_1_2026.product.infraestructure.database.mapper.ProductRepositoryMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
-import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,15 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(CriteriaBuilderConfig.class)
+@Import({CriteriaBuilderConfig.class, DBProductAdapter.class, ProductRepositoryMapper.class})
+@ActiveProfiles("test")
 public class ProductRepositoryTest extends TestContainerConfig {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private TestEntityManager entityManager;
-
 
     //Métodos privados para no repetir código
     private Product createProduct(String name, Double price, Integer stock) {
@@ -47,11 +46,11 @@ public class ProductRepositoryTest extends TestContainerConfig {
         Product saved = productRepository.save(product);
 
         //Asserts
-        assertThat(productRepository.findById(saved.getId())).isPresent();
-        assertThat(saved.getId()).isNotNull();
-        assertThat(saved.getName()).isEqualTo(nameProduct);
-        assertThat(saved.getPrice()).isEqualTo(priceProduct);
-        assertThat(saved.getStock()).isEqualTo(stockProduct);
+        assertThat(productRepository.findById(saved.id())).isPresent();
+        assertThat(saved.id()).isNotNull();
+        assertThat(saved.name()).isEqualTo(nameProduct);
+        assertThat(saved.price()).isEqualTo(priceProduct);
+        assertThat(saved.stock()).isEqualTo(stockProduct);
     }
 
 
@@ -62,18 +61,17 @@ public class ProductRepositoryTest extends TestContainerConfig {
         String nameProduct = "Producto1";
         Double priceProduct = 999.00;
         Integer stockProduct = 100;
-        Product product = entityManager.persistAndFlush(
-                createProduct(nameProduct, priceProduct, stockProduct));
+        Product product = productRepository.save(createProduct(nameProduct, priceProduct, stockProduct));
 
         //Act
-        Optional<Product> result = productRepository.findById(product.getId());
+        Optional<Product> result = productRepository.findById(product.id());
 
         //Asserts
         assertThat(result).isPresent()
                 .hasValueSatisfying(p -> {
-                    assertThat(p.getName()).isEqualTo(nameProduct);
-                    assertThat(p.getPrice()).isEqualByComparingTo(priceProduct);
-                    assertThat(p.getPrice()).isEqualByComparingTo(priceProduct);
+                    assertThat(p.name()).isEqualTo(nameProduct);
+                    assertThat(p.price()).isEqualByComparingTo(priceProduct);
+                    assertThat(p.price()).isEqualByComparingTo(priceProduct);
                 });
     }
 
@@ -95,10 +93,8 @@ public class ProductRepositoryTest extends TestContainerConfig {
         String nameProduct2 = "Producto2";
         Double priceProduct = 999.00;
         Integer stockProduct = 100;
-        Product product = entityManager.persistAndFlush(
-                createProduct(nameProduct1, priceProduct, stockProduct));
-        Product product2 = entityManager.persistAndFlush(
-                createProduct(nameProduct2, priceProduct, stockProduct));
+        productRepository.save(createProduct(nameProduct1, priceProduct, stockProduct));
+        productRepository.save(createProduct(nameProduct2, priceProduct, stockProduct));
 
         //Act
         List<Product> products = productRepository.findAll();
@@ -125,16 +121,13 @@ public class ProductRepositoryTest extends TestContainerConfig {
         String nameProduct = "Producto1";
         Double priceProduct = 999.00;
         Integer stockProduct = 100;
-        Product product = entityManager.persistAndFlush(
-                createProduct(nameProduct, priceProduct, stockProduct));
+        Product product = productRepository.save(createProduct(nameProduct, priceProduct, stockProduct));
 
         //Act
-        productRepository.deleteById(product.getId());
-        entityManager.flush();
-        entityManager.clear();
+        productRepository.deleteById(product.id());
 
         //Asserts
-        Optional<Product> deleted = productRepository.findById(product.getId());
+        Optional<Product> deleted = productRepository.findById(product.id());
         assertThat(deleted).isEmpty();
     }
 }
